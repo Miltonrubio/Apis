@@ -1,0 +1,85 @@
+
+:root{
+  --colorPrimario: rgb(238,0,3);
+  --color-back: #faf6f6;
+}
+body {
+  background-image: url('../img/backlogin.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.contenedor-principal {
+  background-color: var(--color-back);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
+  margin-top: 12%;
+  max-width: 500px;
+  padding: 20px;
+  width: 100%;
+}
+.bg-modal-tipo{
+  background-color: rgba(36, 36, 37, 0.753);
+}
+
+form {
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+.titulo-login {
+  font-size: 40px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.nota-login {
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 2em;
+  color: gray;
+}
+
+.btn-container {
+  text-align: center;
+}
+
+.btn-ingresar {
+  background-color: var(--colorPrimario);
+  color: white;
+  border: none;
+}
+.btn-ingresar:hover {
+  background-color: rgba(255, 0, 0, 0.815);
+  color: white;
+}
+/*animaciones*/
+form p {
+  animation-duration: 1s;
+  animation-name: slidein;
+}
+
+@keyframes slidein {
+  from {
+    margin-left: 10%;
+    width: 300%;
+    color: transparent;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .contenedor-principal {
+    margin-top: 40%;
+    width: 90%;
+  }
+}
+

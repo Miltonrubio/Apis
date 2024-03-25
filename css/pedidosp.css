@@ -1,0 +1,165 @@
+.contenedor-principal {
+  margin-top: 7em;
+  text-align: center;
+}
+
+.bg-modal-tipo{
+  background-color: rgba(36, 36, 37, 0.753);
+}
+
+.contenedortablasmodal {
+  overflow-y: scroll;
+}
+
+.tabla2 {
+  overflow-y: scroll;
+
+}
+#contenedorTablaproveedor{
+  box-shadow:  0 0 10px 0 rgba(0,0,0,0.2);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.table-prove {
+  font-size: 20px;
+}
+
+.colarticulos {
+  width: 500px;
+}
+
+.colhistorial {
+
+  width: 500px;
+}
+.dataTables_filter {
+ /* //quitar los estilos de la barra de busqueda */
+
+ margin-top: -4em;
+ z-index: 2;
+ margin-bottom: 1.5em;
+ margin-right: 3em;
+ 
+
+}
+.btn-close{
+  z-index: 3;
+}
+
+
+
+.ContenedorTablas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 1em;
+}
+.equivalencias:hover {
+  cursor: pointer;
+}
+.tituloTablas {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+}
+
+.table-container {
+  position: relative;
+  width: 600px;
+  height: 100%;
+  border: 2px solid red;
+  display: inline-block;
+}
+
+.table2 {
+  float: left;
+}
+
+.table2 input {
+  width: 70px;
+  border : none;
+  height: 100%;
+  padding: 10px;
+  text-align: center;
+
+}
+.table2 label {
+  width: 90px;
+  height: 100%;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.table2 .thead2 {
+  background-color: #eec013;
+  position: sticky;
+  text-align: center;
+  top: 0;
+}
+
+.table2 th {
+  border: 1px solid black;
+
+}
+
+.table2 td {
+  border: 1px solid black;
+
+  margin: 0;
+  white-space: nowrap
+}
+
+.right {
+  overflow: auto;
+}
+
+.div-tarjetasprove {
+  border-radius: 10px;
+}
+.titulo{
+  font-size: 2em;
+  font-weight: bold;;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 1em;
+
+}
+#contenedor-pedido{
+  bottom: 0;
+  margin: 1em;
+  z-index: 100;
+}
+.cabezeras{
+  display: inline-flex;
+  font-size: 11px;
+  height: 26px;
+}
+#tablaproductos{
+  margin-top: 2.3em;
+}
+
+#tablaproductos tr {
+  height: 40px;
+}
+
+#tablaHistorial {
+  margin-top: -2.0em;
+}
+
+#tablaHistorial input{
+  width: 76px;
+  height:44px;
+  margin-left: 9px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.body-historial{
+  height: 600px !important;
+
+}
+
+

@@ -1,0 +1,178 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  color: black;
+}
+.succes{
+  color: green;
+}
+.failure{
+  color: red;
+}
+.contenedor-principal{
+  margin-top: 5em;
+
+}
+
+.labelHistorial:hover{
+  cursor: pointer;
+}
+
+.importe2:hover{
+  cursor: pointer;
+}
+
+.drag-area{
+  border: 3px dashed rgba(255, 0, 0, 0.664);
+  height: 300px;
+  width: 100%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.drag-area.active{
+  border-color: green;
+}
+.drag-area h3{
+  font-weight: bold;
+}
+.file-container{  
+  align-items: center;  
+  padding: 10px;
+  border: solid 1px #ddd;
+}
+
+#preview{
+  margin-top: 10px;
+}
+.status-text{
+  padding: 0 10px;
+}
+
+.success{
+  color: green;
+}
+.faile{
+  color: red;
+}
+
+.btn-personalizados{
+  background-color: rgb(239,239,1);
+  color: black;
+  border-radius: 10px;
+  font-weight: bold;
+}
+.btn-personalizados-success{
+  background-color: rgb(25,135,84);
+  color: black;
+  border-radius: 10px;
+  font-weight: bold;
+}
+.contenedor-fechas{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 1em;
+  margin-top: -3em;
+}
+.inputsfechas{
+  border:1px solid gray;
+  padding: 5px;
+  font-weight: bold;
+  border-radius: 10px;
+  
+}
+.table-datos{
+  width: 100%;
+  border-collapse: collapse;
+  font-weight: bold;
+  font-size: 12px;
+}
+.contenedor-tabla{
+  width: 100%;
+  padding: 10px 100px 0 100px;
+  box-shadow: rgba(128, 128, 128, 0.877);
+}
+.labelsfechas{
+  font-weight: bold;
+}
+.btnexcel{
+  background-color: green !important;
+  color: white;
+}
+.btn-Gastos{  
+  border: 1px solid gray;
+  background-color: rgb(239,239,1);
+  border-radius: 5px;
+  padding: 3px;
+}
+
+#view-pdf{
+    object-fit: cover;
+    cursor: pointer;
+    overflow: hidden;    
+}
+
+#view-pdf:hover{
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);   
+}
+
+#btn-delete{
+  width: 33px;
+  height: auto;  
+}
+
+#btn-delete:hover{
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.bg-modal-tipo{
+  background-color: rgba(36, 36, 37, 0.753);
+}
+
+@media screen and (max-width: 700px){
+  .contenedor-principal{
+    margin-top: 4em;
+  }
+  .contenedor-fechas{
+    flex-direction: column;
+    margin-top: 1em;
+  }
+  .inputsfechas{
+    width: 100%;
+  }
+  .contenedor-tabla{
+    width: 100%;
+    padding: 0 15px 0 15px;
+    box-shadow: rgba(128, 128, 128, 0.877);
+    font-size: 11.5px;
+  }
+}
+
+@media screen and (max-width: 1500px){
+  .contenedor-principal{
+    margin-top: 5em;
+  }
+ 
+  .contenedor-tabla{
+    width: 100%;
+    padding: 0 25px 25px;
+    box-shadow: rgba(128, 128, 128, 0.877);
+  }
+  h1{
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  .contenedor-tabla th {
+    font-size: 7px;
+    font-weight: bold;
+  }
+}

@@ -1,0 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  color: black;
+}
+
+.bg-modal-tipo {
+  background-color: rgba(36, 36, 37, 0.753);
+}
+
+.succes {
+  color: green;
+}
+
+.failure {
+  color: red;
+}
+
+.bg-modal-header {
+  background-color: red;
+}
+
+.bg-modal-footer {
+  background-color: rgb(239, 239, 1);
+}
+
+.bg-modal-pagar {
+  background-color: red;
+}
+
+#title_modal_pagar {
+  color: white;
+}
+
+#title-info {
+  color: white;
+}
+
+.contenedor-principal {
+  margin-top: 5em;
+
+}
+
+.drag-area-polizas {
+  border: 3px dashed rgba(255, 0, 0, 0.664);
+  height: 300px;
+  width: 100%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.drag-area-polizas.active {
+  border-color: green;
+}
+
+.drag-area-polizas.disabled {
+  border-color: gray;
+}
+
+.drag-area-polizas h3 {
+  font-weight: bold;
+}
+
+.file-container {
+  align-items: center;
+  padding: 10px;
+  border: solid 1px #ddd;
+}
+
+.btn-personalizados {
+  background-color: rgb(239, 239, 1);
+  color: black;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+#view-pdf {
+  object-fit: cover;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#view-pdf:hover {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+
+#btn-delete {
+  width: 33px;
+  height: auto;
+}
+
+#btn-delete:hover {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+#preview {
+  margin-top: 10px;
+}

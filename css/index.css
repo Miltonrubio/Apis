@@ -1,0 +1,54 @@
+.form{
+  display: inline-block;
+}
+
+code{
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 10px;
+ 
+}
+.form button{
+  margin-top: 1em;
+}
+.form label{
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  font-weight: bold;
+  padding: 0;
+}
+.titulo{
+  font-size: 2em;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 1em;
+
+}
+.contenedor-inputs{
+  margin-top: -1.4em;
+}
+.padre{
+  margin-top: 10px;
+}
+.section{  
+  width: 65%;
+  border: 1px solid gray;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 7px;
+  box-shadow:  0 0 10px 0 rgba(0,0,0,0.2);
+}
+
+.separator{
+  display: flex;
+  width: 100%;
+  height: auto;
+  background-color: aquamarine;
+  align-items: center;
+  justify-content: center;
+}
+
