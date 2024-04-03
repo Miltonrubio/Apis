@@ -1534,13 +1534,13 @@ class Peticiones
     }
     */
 
-    function IngresarServicioConFoto($idunidad, $idcliente, $km, $combustible, $motivo, $fechaIngreso, $horaIngreso, $marca, $modelo, $motor, $vin, $placas, $anio, $foto, $tipounidad, $numeroInyectores)
+    function IngresarServicioConFoto($idunidad, $idcliente, $km, $combustible, $motivo, $fechaIngreso, $horaIngreso, $marca, $modelo, $motor, $vin, $placas, $anio, $foto, $tipounidad /*, $numeroInyectores */)
     {
         $model = new ModeloBD();
 
-     
-            $resultado = $model->IngresarServicioConFoto($idunidad, $idcliente, $km, $combustible, $motivo, $fechaIngreso, $horaIngreso, $marca, $modelo, $motor, $vin, $placas, $anio, $foto, $tipounidad);
-      
+
+        $resultado = $model->IngresarServicioConFoto($idunidad, $idcliente, $km, $combustible, $motivo, $fechaIngreso, $horaIngreso, $marca, $modelo, $motor, $vin, $placas, $anio, $foto, $tipounidad);
+
 
         if ($resultado) {
             $resul = $resultado;
@@ -1788,13 +1788,13 @@ class Peticiones
 
 
 
-    function AgregarServicioInyectores($idunidad, $motivo, $numeroInyectores, $tipo)
+    function AgregarServicioInyectores($idunidad, $motivo, $numeroInyectores)
     {
         $model = new ModeloBD();
-        $id_servicio_inyec = $model->IngresarServicioDeInyector($idunidad, $motivo, $tipo);
+        $id_servicio_inyec = $model->IngresarServicioDeInyector($idunidad, $motivo);
 
         try {
-            $model->InsertarInyectores($id_servicio_inyec, $numeroInyectores, $tipo);
+            $model->InsertarInyectores($id_servicio_inyec, $numeroInyectores);
 
             $resul = 'exitoso';
         } catch (\Throwable $th) {
@@ -1975,83 +1975,81 @@ class Peticiones
         echo json_encode($resul);
     }
 
-function AsignarInsumoAServicioInyector($ID_servicio_inyector, $clave, $cantidad, $descripcion, $precio, $unidad, $importe, $descuento, $tipo){
-    
-    $model = new ModeloBD();
-    $dato = $model->AsignarInsumoAServicioInyector($ID_servicio_inyector, $clave, $cantidad, $descripcion, $precio, $unidad, $importe, $descuento, $tipo);
-    if ($dato) {
-        $resul = 'Exito';
-    } else {
-        $resul = 'fallo';
+    function AsignarInsumoAServicioInyector($ID_servicio_inyector, $clave, $cantidad, $descripcion, $precio, $unidad, $importe, $descuento, $tipo)
+    {
+
+        $model = new ModeloBD();
+        $dato = $model->AsignarInsumoAServicioInyector($ID_servicio_inyector, $clave, $cantidad, $descripcion, $precio, $unidad, $importe, $descuento, $tipo);
+        if ($dato) {
+            $resul = 'Exito';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
     }
-    echo json_encode($resul);
-}
 
 
 
-function EliminarInsumoAServicio($idrefaccion)
-{
-    $model = new ModeloBD();
-    $dato = $model->EliminarInsumoAServicio($idrefaccion);
-    if ($dato) {
-        $resul = 'Exitoso';
-    } else {
-        $resul = 'fallo';
+    function EliminarInsumoAServicio($idrefaccion)
+    {
+        $model = new ModeloBD();
+        $dato = $model->EliminarInsumoAServicio($idrefaccion);
+        if ($dato) {
+            $resul = 'Exitoso';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
     }
-    echo json_encode($resul);
-}
 
 
 
-function ConsultarInsumosXServInyector($ID_serv_inyector)
-{
+    function ConsultarInsumosXServInyector($ID_serv_inyector)
+    {
 
-    $model = new ModeloBD();
+        $model = new ModeloBD();
 
-    $dato = $model->ConsultarInsumosXServInyector($ID_serv_inyector);
-    if ($dato) {
-        $resul = $dato;
-    } else {
-        $resul = 'fallo';
+        $dato = $model->ConsultarInsumosXServInyector($ID_serv_inyector);
+        if ($dato) {
+            $resul = $dato;
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
     }
-    echo json_encode($resul);
-}
 
 
-function FinalizarRevisionInyector($ID_inyector){
+    function FinalizarRevisionInyector($ID_inyector)
+    {
 
 
-    $model = new ModeloBD();
+        $model = new ModeloBD();
 
-    $dato = $model->FinalizarRevisionInyector($ID_inyector);
-    if ($dato) {
-        $resul = 'Exito';
-    } else {
-        $resul = 'fallo';
+        $dato = $model->FinalizarRevisionInyector($ID_inyector);
+        if ($dato) {
+            $resul = 'Exito';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
     }
-    echo json_encode($resul);
-
-}
 
 
 
 
 
 
-function ConsultarNumFinalizados($ID_serv_inyector){
+    function ConsultarNumFinalizados($ID_serv_inyector)
+    {
 
-    $model = new ModeloBD();
+        $model = new ModeloBD();
 
-    $dato = $model->ConsultarNumFinalizados($ID_serv_inyector);
-    if ($dato) {
-        $resul = $dato;
-    } else {
-        $resul = 'fallo';
+        $dato = $model->ConsultarNumFinalizados($ID_serv_inyector);
+        if ($dato) {
+            $resul = $dato;
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
     }
-    echo json_encode($resul);
-}
-
-
-
-
 }

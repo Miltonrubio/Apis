@@ -747,8 +747,8 @@ if (!empty($_POST['opcion'])) {
       $anio = $_POST['anio'];
       $foto = $_POST['foto'];
       $tipounidad = $_POST['tipounidad'];
-      $numeroInyectores = $_POST['numeroInyectores'];
-      $dato = $control->IngresarServicioConFoto($idunidad, $idcliente, $km, $combustible, $motivo, $fechaIngreso, $horaIngreso, $marca, $modelo, $motor, $vin, $placas, $anio, $foto, $tipounidad, $numeroInyectores);
+    //  $numeroInyectores = $_POST['numeroInyectores'];
+    $dato = $control->IngresarServicioConFoto($idunidad, $idcliente, $km, $combustible, $motivo, $fechaIngreso, $horaIngreso, $marca, $modelo, $motor, $vin, $placas, $anio, $foto, $tipounidad /*, $numeroInyectores */);
       break;
 
 
@@ -900,9 +900,9 @@ if (!empty($_POST['opcion'])) {
       $ID_unidad = $_POST['ID_unidad'];
       $motivo_ingreso = $_POST['motivo_ingreso'];
       $numeroInyectores = $_POST['numeroInyectores'];
-      $tipo = $_POST['tipo'];
+     // $tipo = $_POST['tipo'];
 
-      $control->AgregarServicioInyectores($ID_unidad, $motivo_ingreso, $numeroInyectores, $tipo);
+      $control->AgregarServicioInyectores($ID_unidad, $motivo_ingreso, $numeroInyectores);
       break;
 
 

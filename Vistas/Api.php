@@ -2614,7 +2614,9 @@
           name = "anio" value = "2002" <br />
           name = "foto" value = "foto" <br />
           name = "tipounidad" value = "moto" <br />
+          <!--
           name = "numeroInyectores" value = "1" <br />
+-->
 
         </code><br>
         <div class="form-floating contenedor-inputs padre"><br>
@@ -2678,12 +2680,14 @@
           <label for="floatingInput">tipounidad</label>
         </div>
 
+        <!--
+
         <div class="form-floating contenedor-inputs padre"><br>
           <input type="text" name="numeroInyectores" value="1">
           <label for="floatingInput">numeroInyectores</label>
         </div>
 
-
+-->
         <button type="submit" class="btn btn-primary">consultar</button>
       </form>
     </div>
@@ -3252,7 +3256,9 @@
           name="numeroInyectores" value="2"<br />
           name="ID_unidad" value="ID_unidad"<br />
           name="motivo_ingreso" value="motivo_ingreso"<br />
+          <!--
           name="tipo" value="Inyector o Turbo"<br />
+-->
         </code><br>
 
 
@@ -3273,11 +3279,12 @@
         </div>
 
 
+        <!--
         <div class="form-floating contenedor-inputs padre"><br>
           <input type="text" name="tipo" value="Inyector">
           <label for="floatingInput">tipo</label>
         </div>
-
+-->
 
         <button type="submit" class="btn btn-primary">consultar</button>
       </form>

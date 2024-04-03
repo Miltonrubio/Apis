@@ -712,6 +712,7 @@ class ModeloBD
 
   function MostrarGavetas()
   {
+    /*
     $query = "SELECT G.id_gabeta, G.nombre AS nombre_gaveta, C.id_cajon, C.nombre AS nombre_cajon, M.idusuario, M.nombre AS nombre_mecanico, M.foto AS foto_mecanico
     FROM inv_gabeta G
     LEFT JOIN inv_cajones C ON G.id_gabeta = C.id_gabeta 
@@ -771,7 +772,69 @@ class ModeloBD
       $this->modelo;
     }
   }
+*/
 
+
+    $query = "SELECT G.id_gabeta, G.descripcion, G.nombre AS nombre_gaveta, C.id_cajon, C.nombre AS nombre_cajon, M.idusuario, M.nombre AS nombre_mecanico, M.foto AS foto_mecanico
+      FROM inv_gabeta G
+      LEFT JOIN inv_cajones C ON G.id_gabeta = C.id_gabeta 
+      LEFT JOIN adm_usuarios M ON G.idmecanico = M.idusuario
+      WHERE (C.estatus = 'activo' OR C.estatus IS NULL) AND G.estatus = 'activo'
+      ORDER BY G.id_gabeta DESC";
+
+    $result = $this->db->prepare($query);
+    $result->execute();
+
+    if ($result->rowCount() > 0) {
+      $response = array();
+      while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        // Verificar si la gaveta ya existe en el array de respuesta
+        $gavetaExistente = array_filter($response, function ($item) use ($row) {
+          return $item['id_gabeta'] == $row['id_gabeta'];
+        });
+
+        // Si la gaveta no existe, agregarla al array de respuesta
+        if (empty($gavetaExistente)) {
+          $gaveta = array(
+            'id_gabeta' => $row['id_gabeta'],
+            'nombre_gaveta' => $row['nombre_gaveta'],
+            'descripcion' => $row['descripcion'],
+            'idusuario' => $row['idusuario'],
+            'nombre_mecanico' => $row['nombre_mecanico'],
+            'foto_mecanico' => $row['foto_mecanico'],
+            'cajones' => array()
+          );
+
+          $response[] = $gaveta;
+        }
+
+        if ($row['id_cajon'] !== null) {
+          // Agregar información del cajón al array de cajones de la gaveta
+          $cajon = array(
+            'id_cajon' => $row['id_cajon'],
+            'nombre_cajon' => $row['nombre_cajon']
+            // Agrega más atributos del cajón si es necesario
+          );
+
+          // Encontrar la gaveta correspondiente en el array de respuesta
+          $gavetaIndex = array_search($row['id_gabeta'], array_column($response, 'id_gabeta'));
+
+          // Agregar el cajón al array de cajones de la gaveta
+          $response[$gavetaIndex]['cajones'][] = $cajon;
+
+          // Ordenar los cajones por id_cajon ascendente
+          usort($response[$gavetaIndex]['cajones'], function ($a, $b) {
+            return $a['id_cajon'] - $b['id_cajon'];
+          });
+        }
+      }
+      return $response;
+
+      $this->modelo[] = $row;
+    } else {
+      $this->modelo;
+    }
+  }
 
 
   function MostrarHerramientasPorCajonYGabeta($id_gabeta, $id_cajon)
@@ -1087,8 +1150,85 @@ class ModeloBD
     }
   }
 
+  function ConsultarTodosLosInventariosPorGaveta($idgabeta)
+  {
+    $query = "SELECT idg.*, ihi.*,idg.estado as EstadoInventario, M.nombre as NombreMecanico, M.idusuario as IDMecanico
+        FROM inv_doc_gabetas idg
+        LEFT JOIN inv_herramienta_inventario ihi ON idg.iddocga = ihi.iddoc 
+        LEFT JOIN adm_usuarios M ON ihi.idencargado = M.idusuario
+        WHERE (idg.idgabeta = '$idgabeta')
+        ORDER BY idg.iddocga DESC";
 
+    $result = $this->db->prepare($query);
+    $result->execute();
 
+    if ($result->rowCount() > 0) {
+      $response = array();
+      while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+
+        // Verificar si el doc de inventario ya existe en el array de respuesta
+        $docInventarioExistente = array_filter($response, function ($item) use ($row) {
+          return $item['iddocga'] == $row['iddocga'];
+        });
+
+        // Si doc de inventario no existe, agregarla al array de respuesta
+        if (empty($docInventarioExistente)) {
+          $docInv = array(
+            'iddocga' => $row['iddocga'],
+            'estadoInv' => $row['EstadoInventario'],
+            'NombreMecanico' => $row['NombreMecanico'],
+            'fecha' => $row['fecha'],
+            'hora' => $row['hora'],
+            'IDMecanico' => $row['IDMecanico'],
+            'listaHerramientas' => array(),
+            'totalHerramientas' => 0, // Agregamos el contador de herramientas
+            'totalPendientes' => 0, // Agregamos el contador de herramientas pendientes
+          );
+
+          $response[] = $docInv;
+        }
+
+        if ($row['idinv'] !== null) {
+          // Incrementar el contador de herramientas
+          $docInvIndex = array_search($row['iddocga'], array_column($response, 'iddocga'));
+          $response[$docInvIndex]['totalHerramientas']++;
+
+          // Agregar información de las herramientas al array del doc de inventario
+          $herramientasInv = array(
+            'idinv' => $row['idinv'],
+            'estadoHerr' => $row['estado'],
+            'estatus' => $row['estatus'],
+            'herramienta' => $row['herramienta'],
+            'cantidad' => $row['cantidad'],
+            'comentarios' => $row['comentarios'],
+            'idcajon' => $row['idcajon'],
+            'foto' => $row['foto'],
+          );
+
+          // Verificar si la herramienta está pendiente
+          if ($row['estado'] == "pendiente") {
+            $response[$docInvIndex]['totalPendientes']++; // Incrementar el contador de herramientas pendientes
+          }
+
+          // Encontrar las herramientas correspondiente en el array de respuesta
+          // Agregar la herramienta al array de herramientas del doc de inventario
+          $response[$docInvIndex]['listaHerramientas'][] = $herramientasInv;
+
+          // Ordenar los resultados por id de arriba a abajo
+          usort($response[$docInvIndex]['listaHerramientas'], function ($a, $b) {
+            return $a['idinv'] - $b['idinv'];
+          });
+        }
+      }
+      return $response;
+
+      $this->modelo[] = $row;
+    } else {
+      $this->modelo;
+    }
+  }
+
+  /*
   function ConsultarTodosLosInventariosPorGaveta($idgabeta)
   {
 
@@ -1158,6 +1298,8 @@ class ModeloBD
       $this->modelo;
     }
   }
+*/
+
 
 
   function actualizarEstadoHerramienta($estadoHerramienta, $idinv)
@@ -2276,7 +2418,7 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
 
 
 
-  function InsertarInyectores($id_ser_ventas, $numeroInyectores, $tipo)
+  function InsertarInyectores($id_ser_ventas, $numeroInyectores)
   {
     $status_inyector = "Pendiente";
 
@@ -2285,14 +2427,7 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
     $result = $this->db->prepare($query);
 
     for ($i = 1; $i <= $numeroInyectores; $i++) {
-
-
-      if ($tipo == "Turbo") {
-        $nombreInyector = "Turbo";
-      } else {
-        $nombreInyector = "Inyector " + $i;
-      }
-
+      $nombreInyector = "Inyector " . $i;
       $result->bindParam(':nombre_inyector', $nombreInyector);
       $result->bindParam(':ID_servicio', $id_ser_ventas);
       $result->bindParam(':status_inyector', $status_inyector);
