@@ -2052,4 +2052,99 @@ class Peticiones
         }
         echo json_encode($resul);
     }
+
+    /*
+    function AsinarTraspasoAServicio($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA)
+    {
+        $model = new ModeloBD();
+
+        $dato = $model->AsinarTraspasoAServicio($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+        if ($dato) {
+            $listaContenidoTraspaso =     $model->consultarContenidoTraspaso($DOCID);
+
+            if ($listaContenidoTraspaso != "fallo") {
+                try {
+                    $respuestaRecorrido = $model->recorrerTraspaso($listaContenidoTraspaso, $ID_serv);
+
+                    $resul = $respuestaRecorrido;
+                } catch (Exception $e) {
+                    $resul = $e->getMessage();
+                }
+            } else {
+                $resul = "Algo fallo en la api";
+            }
+
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+
+    }
+
+    */
+
+    function AsinarTraspasoAServicio($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA)
+    {
+        $model = new ModeloBD();
+
+        $dato = $model->AsinarTraspasoAServicio($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+
+        if ($dato) {
+
+            $listaContenido = $model->consultarContenidoTraspaso($DOCID);
+
+            try {
+                $respuestaRecorrido = $model->recorrerEInsertarTraspaso($listaContenido, $ID_serv, $DOCID);
+                $resul = $respuestaRecorrido;
+            } catch (Exception $e) {
+                $resul = "El error es " . $e->getMessage();
+            }
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+    function ConsultaTraspasosPorServicio($id_ser_venta)
+    {
+
+        $model = new ModeloBD();
+
+        $dato = $model->ConsultaTraspasosPorServicio($id_ser_venta);
+        if ($dato) {
+            $resul = $dato;
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+    function DesvincularTraspaso($ID_traspaso, $DOCID)
+    {
+
+        $model = new ModeloBD();
+        $dato = $model->DesvincularTraspaso($ID_traspaso);
+
+        if ($dato) {
+
+
+            $respustaLista =   $model->EliminarRefaccionesTraspasos($DOCID);
+            
+            if ($respustaLista) {
+
+                $resul = 'Exitoso';
+                //   $resul = 'Exitoso';
+            } else {
+
+                $resul = 'fallo al borrar refacciones';
+            }
+        } else {
+            $resul = 'fallo';
+        }
+
+
+        echo json_encode($respustaLista);
+    }
 }

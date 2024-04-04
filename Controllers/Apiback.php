@@ -747,8 +747,8 @@ if (!empty($_POST['opcion'])) {
       $anio = $_POST['anio'];
       $foto = $_POST['foto'];
       $tipounidad = $_POST['tipounidad'];
-    //  $numeroInyectores = $_POST['numeroInyectores'];
-    $dato = $control->IngresarServicioConFoto($idunidad, $idcliente, $km, $combustible, $motivo, $fechaIngreso, $horaIngreso, $marca, $modelo, $motor, $vin, $placas, $anio, $foto, $tipounidad /*, $numeroInyectores */);
+      //  $numeroInyectores = $_POST['numeroInyectores'];
+      $dato = $control->IngresarServicioConFoto($idunidad, $idcliente, $km, $combustible, $motivo, $fechaIngreso, $horaIngreso, $marca, $modelo, $motor, $vin, $placas, $anio, $foto, $tipounidad /*, $numeroInyectores */);
       break;
 
 
@@ -900,7 +900,7 @@ if (!empty($_POST['opcion'])) {
       $ID_unidad = $_POST['ID_unidad'];
       $motivo_ingreso = $_POST['motivo_ingreso'];
       $numeroInyectores = $_POST['numeroInyectores'];
-     // $tipo = $_POST['tipo'];
+      // $tipo = $_POST['tipo'];
 
       $control->AgregarServicioInyectores($ID_unidad, $motivo_ingreso, $numeroInyectores);
       break;
@@ -1050,14 +1050,51 @@ if (!empty($_POST['opcion'])) {
       $control->ConsultarNumFinalizados($ID_serv_inyector);
 
       break;
-  
-  
-  
-      case 135:
-        $control->ConsultarServiciosInyectoresEntregados();
-        break;
-  
-  
-  
+
+
+
+    case 135:
+      $control->ConsultarServiciosInyectoresEntregados();
+      break;
+
+    case 138:
+
+      $ID_serv = $_POST['ID_serv'];
+      $DOCID = $_POST['DOCID'];
+      $NOMBRE = $_POST['NOMBRE'];
+      $EMISOR = $_POST['EMISOR'];
+      $NUMERO = $_POST['NUMERO'];
+      $ESTADO = $_POST['ESTADO'];
+      $FECHA = $_POST['FECHA'];
+      $FECCAN = $_POST['FECCAN'];
+      $TOTAL = $_POST['TOTAL'];
+      $NOTA = $_POST['NOTA'];
+
+
+      $control->AsinarTraspasoAServicio($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+
+      break;
+
+
+
+
+
+    case 139:
+      $id_ser_venta = $_POST['id_ser_venta'];
+      $control->ConsultaTraspasosPorServicio($id_ser_venta);
+      break;
+
+    case 140:
+      $ID_traspaso = $_POST['ID_traspaso'];
+      $DOCID = $_POST['DOCID'];
+
+      $control->DesvincularTraspaso($ID_traspaso, $DOCID);
+
+      break;
+ 
+ 
+ 
     }
+
+
 }

@@ -3864,6 +3864,144 @@
 
 
 
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Asignar Traspaso a servicio</label></div>
+        <input type="hidden" name="opcion" value="138">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="138"<br />
+          name="ID_serv" value="6281"<br />
+          name="DOCID" value="48354"<br />
+          name="NOMBRE" value="RP- CRISPIN INV"<br />
+          name="EMISOR" value="AH"<br />
+          name="NUMERO" value="3017"<br />
+          name="ESTADO" value="I"<br />
+          name="FECHA" value="2024-04-02"<br />
+          name="FECCAN" value="0000-00-00"<br />
+          name="TOTAL" value="77.42"<br />
+          name="NOTA" value="USO LABORATORIO TURBOS"<br />
+
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="NOTA" value="USO LABORATORIO TURBOS">
+          <label for="floatingInput">NOTA</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="TOTAL" value="77.42">
+          <label for="floatingInput">TOTAL</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="FECCAN" value="0000-00-00">
+          <label for="floatingInput">FECCAN</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="FECHA" value="2024-04-02">
+          <label for="floatingInput">FECHA</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ESTADO" value="I">
+          <label for="floatingInput">ESTADO</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="NUMERO" value="3017">
+          <label for="floatingInput">NUMERO</label>
+        </div>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="EMISOR" value="AH">
+          <label for="floatingInput">EMISOR</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="NOMBRE" value="RP- CRISPIN INV">
+          <label for="floatingInput">NOMBRE</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_serv" value="6281">
+          <label for="floatingInput">ID_serv</label>
+        </div>
+
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="DOCID" value="48354">
+          <label for="floatingInput">DOCID</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Consultar faltantes de finalizacion</label></div>
+        <input type="hidden" name="opcion" value="139">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="139"<br />
+          name="id_ser_venta" value="6281"<br />
+
+
+        </code><br>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="id_ser_venta" value="6281">
+          <label for="floatingInput">id_ser_venta</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Consultar faltantes de finalizacion</label></div>
+        <input type="hidden" name="opcion" value="140">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="140"<br />
+          name="ID_traspaso" value="45"<br />
+          name="DOCID" value="48306"<br />
+
+          
+        </code><br>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_traspaso" value="45">
+          <label for="floatingInput">ID_traspaso</label>
+        </div>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="DOCID" value="48306">
+          <label for="floatingInput">DOCID</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
 
 
     <script src="../librerias/Bootstrap5/js/bootstrap.min.js"></script>

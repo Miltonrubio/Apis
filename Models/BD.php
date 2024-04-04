@@ -3209,6 +3209,125 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
       return false;
     }
   }
+  
+    
+
+  function AsinarTraspasoAServicio($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA)
+  {
+
+    $query = "INSERT INTO traspasos (NOMBRE, DOCID, ID_servicio, NUMERO, ESTADO,EMISOR, FECHA, FECCAN, TOTAL, NOTA) 
+                          VALUES ('$NOMBRE',$DOCID,$ID_serv, '$NUMERO', '$ESTADO','$EMISOR', '$FECHA', '$FECCAN', '$TOTAL', '$NOTA')";
+
+    $result = $this->db->prepare($query);
+    $resul = $result->execute();
+
+    if ($resul) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+
+
+  function consultarContenidoTraspaso($iddoc)
+  {
+    $ch = curl_init();
+    $post = [
+      'opcion' => '73',
+      'iddoc' => $iddoc
+    ];
+    $url = "http://tallergeorgio.hopto.org:5611/monge/tallerapp/Panel.php";
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    $json = json_decode($response, true);
+    return $json;
+  }
+
+
+
+  function recorrerEInsertarTraspaso($listaContenidoTraspaso, $ID_serv, $DOCID)
+  {
+
+    $listaContenidoTraspaso = json_encode($listaContenidoTraspaso);
+    $datos_decodificados = json_decode($listaContenidoTraspaso, true);
+
+    if ($datos_decodificados === null) {
+      throw new Exception("Error al decodificar los datos JSON.");
+    }
+
+    foreach ($datos_decodificados as $elemento) {
+      $clave = $elemento['CLAVE'];
+      $cantidad = $elemento['DESCANTIDAD'];
+      $unidad = $elemento['UNIDAD'];
+      $descripcion = $elemento['DESCRIPCIO'];
+      $precio = $elemento['PRECIO'];
+      $articulo_id = $elemento['ARTICULOID'];
+      $ubicacion = $elemento['UBICACION'];
+      $tipo = "traspaso";
+   //   $observaciones = '';
+      $estatus = 'activo';
+      $precio_unitario = ($precio / $cantidad);
+
+      $query = "INSERT INTO `ser_refacciones`(`clave`, `cantidad`, `unidad`, `descripcion`, `precio`, `importe`, `descuento`, `tipo`, `estatus`, `idventa`, `fecha`, `id_inyector`, `ID_servicio_inyector`, `IDDOC`) 
+                          VALUES (:clave,:cantidad, :unidad, :descripcion, :precio_unitario, :importe, 0, :tipo , :estatus, :ID_serv, now(), 0, 0, :DOCID)";
+
+      $consulta = $this->db->prepare($query);
+      $consulta->bindParam(':clave', $clave);
+      $consulta->bindParam(':cantidad', $cantidad);
+      $consulta->bindParam(':unidad', $unidad);
+      $consulta->bindParam(':descripcion', $descripcion);
+      $consulta->bindParam(':importe', $precio);
+      $consulta->bindParam(':precio_unitario', $precio_unitario);
+      $consulta->bindParam(':tipo', $tipo);
+      $consulta->bindParam(':estatus', $estatus);
+      $consulta->bindParam(':ID_serv', $ID_serv);
+      $consulta->bindParam(':DOCID', $DOCID);
+
+      if (!$consulta->execute()) {
+        throw new Exception("Error al insertar el registro con la clave: " . $clave);
+      }
+    }
+
+    return "Inserciones realizadas exitosamente.";
+
+  }
+
+
+
+  function DesvincularTraspaso ($ID_traspaso){
+
+    $query = "UPDATE traspasos SET STATUS_TRASPASO = 0 WHERE ID_traspaso = $ID_traspaso";
+
+    $result = $this->db->prepare($query);
+    $resul = $result->execute();
+
+    if ($resul /* && $result->rowCount() > 0 */) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+function EliminarRefaccionesTraspasos($DOCID)
+{
+  $query = "UPDATE ser_refacciones SET estatus = 'baja' WHERE IDDOC = $DOCID";
+
+  $result = $this->db->prepare($query);
+
+  if ($result->execute()) {
+    return true;
+  } else {
+    return false;
+  }
+
+}
+
 
   function ConsultarNumFinalizados($ID_serv_inyector)
   {
@@ -3245,6 +3364,20 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
   }
 
 
+  function ConsultaTraspasosPorServicio($id_ser_venta){
+  
+    $query = "SELECT * FROM traspasos  WHERE ID_servicio= $id_ser_venta AND STATUS_TRASPASO = 1 ORDER BY ID_traspaso DESC ";
+
+    $consulta = $this->db->prepare($query);
+    $consulta->execute();
+    while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
+
+      $this->modelo[] = $filas;
+    }
+    return $this->modelo;
+  }
+
+  
 
 
 
