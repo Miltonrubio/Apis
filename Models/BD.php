@@ -775,6 +775,14 @@ class ModeloBD
 */
 
 
+    $query = "SELECT G.id_gabeta, G.descripcion, G.nombre AS nombre_gaveta, G.frecuencia_dias, G.fecha_ultimo_inv, C.id_cajon, C.nombre AS nombre_cajon, M.idusuario, M.nombre AS nombre_mecanico, M.foto AS foto_mecanico
+FROM inv_gabeta G
+LEFT JOIN inv_cajones C ON G.id_gabeta = C.id_gabeta 
+LEFT JOIN adm_usuarios M ON G.idmecanico = M.idusuario
+WHERE (C.estatus = 'activo' OR C.estatus IS NULL) AND G.estatus = 'activo'
+ORDER BY G.id_gabeta DESC";
+
+    /*
     $query = "SELECT G.id_gabeta, G.descripcion, G.nombre AS nombre_gaveta, C.id_cajon, C.nombre AS nombre_cajon, M.idusuario, M.nombre AS nombre_mecanico, M.foto AS foto_mecanico
       FROM inv_gabeta G
       LEFT JOIN inv_cajones C ON G.id_gabeta = C.id_gabeta 
@@ -782,6 +790,7 @@ class ModeloBD
       WHERE (C.estatus = 'activo' OR C.estatus IS NULL) AND G.estatus = 'activo'
       ORDER BY G.id_gabeta DESC";
 
+*/
     $result = $this->db->prepare($query);
     $result->execute();
 
@@ -802,6 +811,8 @@ class ModeloBD
             'idusuario' => $row['idusuario'],
             'nombre_mecanico' => $row['nombre_mecanico'],
             'foto_mecanico' => $row['foto_mecanico'],
+            'fecha_ultimo_inv' => $row['fecha_ultimo_inv'],
+            'frecuencia_dias' => $row['frecuencia_dias'],
             'cajones' => array()
           );
 
@@ -2448,7 +2459,14 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
   function ActualizarEstadoUnidad($ID_ser_venta, $nuevoEstado)
   {
 
-    $query = "UPDATE `ser_ventas` SET `estatus`='$nuevoEstado' WHERE id_ser_venta= $ID_ser_venta";
+    if ($nuevoEstado == "ENTREGADO" || $nuevoEstado == "Entregado" ) {
+
+      $query = "UPDATE `ser_ventas` SET `estatus`='$nuevoEstado', `fecha_salida` =NOW(), `hora_salida`=CURDATE() WHERE id_ser_venta= $ID_ser_venta";
+    } else {
+
+      $query = "UPDATE `ser_ventas` SET `estatus`='$nuevoEstado' WHERE id_ser_venta= $ID_ser_venta";
+    }
+
 
     $result = $this->db->prepare($query);
     $resul = $result->execute();
@@ -3209,8 +3227,8 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
       return false;
     }
   }
-  
-    
+
+
 
   function AsinarTraspasoAServicio($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA)
   {
@@ -3269,7 +3287,7 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
       $articulo_id = $elemento['ARTICULOID'];
       $ubicacion = $elemento['UBICACION'];
       $tipo = "traspaso";
-   //   $observaciones = '';
+      //   $observaciones = '';
       $estatus = 'activo';
       $precio_unitario = ($precio / $cantidad);
 
@@ -3294,12 +3312,12 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
     }
 
     return "Inserciones realizadas exitosamente.";
-
   }
 
 
 
-  function DesvincularTraspaso ($ID_traspaso){
+  function DesvincularTraspaso($ID_traspaso)
+  {
 
     $query = "UPDATE traspasos SET STATUS_TRASPASO = 0 WHERE ID_traspaso = $ID_traspaso";
 
@@ -3314,19 +3332,18 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
   }
 
 
-function EliminarRefaccionesTraspasos($DOCID)
-{
-  $query = "UPDATE ser_refacciones SET estatus = 'baja' WHERE IDDOC = $DOCID";
+  function EliminarRefaccionesTraspasos($DOCID)
+  {
+    $query = "UPDATE ser_refacciones SET estatus = 'baja' WHERE IDDOC = $DOCID";
 
-  $result = $this->db->prepare($query);
+    $result = $this->db->prepare($query);
 
-  if ($result->execute()) {
-    return true;
-  } else {
-    return false;
+    if ($result->execute()) {
+      return true;
+    } else {
+      return false;
+    }
   }
-
-}
 
 
   function ConsultarNumFinalizados($ID_serv_inyector)
@@ -3364,8 +3381,9 @@ function EliminarRefaccionesTraspasos($DOCID)
   }
 
 
-  function ConsultaTraspasosPorServicio($id_ser_venta){
-  
+  function ConsultaTraspasosPorServicio($id_ser_venta)
+  {
+
     $query = "SELECT * FROM traspasos  WHERE ID_servicio= $id_ser_venta AND STATUS_TRASPASO = 1 ORDER BY ID_traspaso DESC ";
 
     $consulta = $this->db->prepare($query);
@@ -3377,7 +3395,7 @@ function EliminarRefaccionesTraspasos($DOCID)
     return $this->modelo;
   }
 
-  
+
 
 
 

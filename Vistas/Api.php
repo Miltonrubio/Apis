@@ -3848,7 +3848,7 @@
 
     <div class="section">
       <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
-        <div><label>Consultar faltantes de finalizacion</label></div>
+        <div><label>Consultar servicios de inyectores finalizados </label></div>
         <input type="hidden" name="opcion" value="135">
         <code>
           <br />
@@ -3947,7 +3947,7 @@
 
     <div class="section">
       <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
-        <div><label>Consultar faltantes de finalizacion</label></div>
+        <div><label>Consultar Traspasos de un servicio</label></div>
         <input type="hidden" name="opcion" value="139">
         <code>
           <br />
@@ -3973,7 +3973,7 @@
 
     <div class="section">
       <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
-        <div><label>Consultar faltantes de finalizacion</label></div>
+        <div><label>Desvincular traspaso</label></div>
         <input type="hidden" name="opcion" value="140">
         <code>
           <br />
