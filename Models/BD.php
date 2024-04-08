@@ -2841,7 +2841,8 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
         JOIN car_marca ON car_marca.id_car_make = ser_unidad.marca
         JOIN car_modelo ON car_modelo.id_car_model = ser_unidad.modelo
         JOIN ser_cliente ON ser_cliente.id_ser_cliente = ser_unidad.id_ser_cliente
-        WHERE ser_servicio_inyector.status_servicio != 'Eliminado' AND ser_servicio_inyector.status_servicio != 'Entregado' ";
+        WHERE ser_servicio_inyector.status_servicio != 'Eliminado' AND ser_servicio_inyector.status_servicio != 'Entregado' 
+        ORDER BY  ser_servicio_inyector.ID_serv_inyector DESC ";
 
     $consulta = $this->db->prepare($query);
     $consulta->execute();
