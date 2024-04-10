@@ -2106,6 +2106,57 @@ class Peticiones
     }
 
 
+function AsinarTraspasoAInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA){
+
+
+    $model = new ModeloBD();
+
+    $dato = $model->AsinarTraspasoInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+
+    if ($dato) {
+
+        $listaContenido = $model->consultarContenidoTraspaso($DOCID);
+
+        try {
+            $respuestaRecorrido = $model->recorrerEInsertarTraspasoInyector($listaContenido, $ID_inyector, $DOCID);
+            $resul = $respuestaRecorrido;
+        } catch (Exception $e) {
+            $resul = "El error es " . $e->getMessage();
+        }
+    } else {
+        $resul = 'fallo';
+    }
+    echo json_encode($resul);
+
+}
+
+
+
+    function AsinarTraspasoAServicioDeInyector($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA)
+    {
+        $model = new ModeloBD();
+
+        $dato = $model->AsinarTraspasoAServicioDeInyector($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+
+        if ($dato) {
+
+            $listaContenido = $model->consultarContenidoTraspaso($DOCID);
+
+            try {
+                $respuestaRecorrido = $model->recorrerEInsertarTraspasoDeSerInyector($listaContenido, $ID_serv, $DOCID);
+                $resul = $respuestaRecorrido;
+            } catch (Exception $e) {
+                $resul = "El error es " . $e->getMessage();
+            }
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+
+
     function ConsultaTraspasosPorServicio($id_ser_venta)
     {
 
@@ -2119,6 +2170,39 @@ class Peticiones
         }
         echo json_encode($resul);
     }
+
+
+    function ConsultaTraspasosPorServicioInyectores($id_serv_inyector)
+    {
+
+        $model = new ModeloBD();
+
+        $dato = $model->ConsultaTraspasosPorServicioInyector($id_serv_inyector);
+        if ($dato) {
+            $resul = $dato;
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+
+    function ConsultaTraspasosPorInyectores($ID_inyector)
+    {
+
+        $model = new ModeloBD();
+
+        $dato = $model->ConsultaTraspasosPorInyector($ID_inyector);
+        if ($dato) {
+            $resul = $dato;
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
 
 
     function DesvincularTraspaso($ID_traspaso, $DOCID)
@@ -2147,4 +2231,65 @@ class Peticiones
 
         echo json_encode($respustaLista);
     }
+
+
+
+    function GenerarPDFRecepcionInyector($ID_serv_inyector)
+    {
+        $model = new ModeloBD();
+        $dato = $model->GenerarPDFRecepcionInyector($ID_serv_inyector);
+        if ($dato) {
+            $resul = 'exitoso';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+
+
+
+    function GenerarPDFSalidaInyector($ID_serv_inyector)
+    {
+        $model = new ModeloBD();
+        $dato = $model->GenerarPDFSalidaInyector($ID_serv_inyector);
+        if ($dato) {
+            $resul = 'exitoso';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+
+
+    function GenerarPDFRefaccionesDeInyector($ID_serv_inyector)
+    {
+        $model = new ModeloBD();
+        $dato = $model->GenerarPDFRefaccionesDeInyector($ID_serv_inyector);
+        if ($dato) {
+            $resul = 'exitoso';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+
+    function GenerarPDFManoDeObraDeInyector($ID_serv_inyector)
+    {
+        $model = new ModeloBD();
+        $dato = $model->GenerarPDFManoDeObraDeInyector($ID_serv_inyector);
+        if ($dato) {
+            $resul = 'exitoso';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
 }

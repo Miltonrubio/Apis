@@ -1091,10 +1091,83 @@ if (!empty($_POST['opcion'])) {
       $control->DesvincularTraspaso($ID_traspaso, $DOCID);
 
       break;
- 
- 
- 
-    }
 
 
+
+    case 141:
+
+
+      $ID_serv_inyector = $_POST['ID_serv_inyector'];
+      $DOCID = $_POST['DOCID'];
+      $NOMBRE = $_POST['NOMBRE'];
+      $EMISOR = $_POST['EMISOR'];
+      $NUMERO = $_POST['NUMERO'];
+      $ESTADO = $_POST['ESTADO'];
+      $FECHA = $_POST['FECHA'];
+      $FECCAN = $_POST['FECCAN'];
+      $TOTAL = $_POST['TOTAL'];
+      $NOTA = $_POST['NOTA'];
+
+
+      $control->AsinarTraspasoAServicioDeInyector($ID_serv_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+      break;
+
+
+    case 142:
+      $id_serv_inyector = $_POST['id_serv_inyector'];
+      $control->ConsultaTraspasosPorServicioInyectores($id_serv_inyector);
+      break;
+
+
+
+
+    case 143:
+
+
+      $ID_inyector = $_POST['ID_inyector'];
+      $DOCID = $_POST['DOCID'];
+      $NOMBRE = $_POST['NOMBRE'];
+      $EMISOR = $_POST['EMISOR'];
+      $NUMERO = $_POST['NUMERO'];
+      $ESTADO = $_POST['ESTADO'];
+      $FECHA = $_POST['FECHA'];
+      $FECCAN = $_POST['FECCAN'];
+      $TOTAL = $_POST['TOTAL'];
+      $NOTA = $_POST['NOTA'];
+
+
+      $control->AsinarTraspasoAInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+      break;
+
+
+
+
+    case 144:
+      $ID_inyector = $_POST['ID_inyector'];
+      $control->ConsultaTraspasosPorInyectores($ID_inyector);
+      break;
+
+    case 145:
+      $ID_serv_inyector = $_POST['ID_serv_inyector'];
+      $control->GenerarPDFRecepcionInyector($ID_serv_inyector);
+      break;
+
+
+    case 146:
+      $ID_serv_inyector = $_POST['ID_serv_inyector'];
+      $control->GenerarPDFSalidaInyector($ID_serv_inyector);
+      break;
+
+
+    case 147:
+      $ID_serv_inyector = $_POST['ID_serv_inyector'];
+      $control->GenerarPDFRefaccionesDeInyector($ID_serv_inyector);
+      break;
+
+
+    case 148:
+      $ID_serv_inyector = $_POST['ID_serv_inyector'];
+      $control->GenerarPDFManoDeObraDeInyector($ID_serv_inyector);
+      break;
+  }
 }

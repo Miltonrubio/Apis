@@ -2434,7 +2434,7 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
     $status_inyector = "Pendiente";
 
 
-    $query = "INSERT INTO inyectores (nombre_inyector, ID_servicio, status_inyector, tipo) VALUES (:nombre_inyector, :ID_servicio, :status_inyector, :tipo )";
+    $query = "INSERT INTO inyectores (nombre_inyector, ID_servicio, status_inyector) VALUES (:nombre_inyector, :ID_servicio, :status_inyector)";
     $result = $this->db->prepare($query);
 
     for ($i = 1; $i <= $numeroInyectores; $i++) {
@@ -2442,7 +2442,6 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
       $result->bindParam(':nombre_inyector', $nombreInyector);
       $result->bindParam(':ID_servicio', $id_ser_ventas);
       $result->bindParam(':status_inyector', $status_inyector);
-      $result->bindParam(':tipo', $tipo);
       $result->execute();
 
       if (!$result) {
@@ -3231,6 +3230,136 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
 
 
 
+  function AsinarTraspasoAServicioDeInyector($ID_serv_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA)
+  {
+
+    $query = "INSERT INTO traspasos (NOMBRE, DOCID, ID_serv_inyector, NUMERO, ESTADO,EMISOR, FECHA, FECCAN, TOTAL, NOTA) 
+                          VALUES ('$NOMBRE',$DOCID,$ID_serv_inyector, '$NUMERO', '$ESTADO','$EMISOR', '$FECHA', '$FECCAN', '$TOTAL', '$NOTA')";
+
+    $result = $this->db->prepare($query);
+    $resul = $result->execute();
+
+    if ($resul) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+  function AsinarTraspasoInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA){
+
+    $query = "INSERT INTO traspasos (NOMBRE, DOCID, ID_inyector, NUMERO, ESTADO,EMISOR, FECHA, FECCAN, TOTAL, NOTA) 
+                          VALUES ('$NOMBRE',$DOCID,$ID_inyector, '$NUMERO', '$ESTADO','$EMISOR', '$FECHA', '$FECCAN', '$TOTAL', '$NOTA')";
+
+    $result = $this->db->prepare($query);
+    $resul = $result->execute();
+
+    if ($resul) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+
+  function recorrerEInsertarTraspasoDeSerInyector($listaContenidoTraspaso, $ID_servicio_inyector, $DOCID)
+  {
+
+    $listaContenidoTraspaso = json_encode($listaContenidoTraspaso);
+    $datos_decodificados = json_decode($listaContenidoTraspaso, true);
+
+    if ($datos_decodificados === null) {
+      throw new Exception("Error al decodificar los datos JSON.");
+    }
+
+    foreach ($datos_decodificados as $elemento) {
+      $clave = $elemento['CLAVE'];
+      $cantidad = $elemento['DESCANTIDAD'];
+      $unidad = $elemento['UNIDAD'];
+      $descripcion = $elemento['DESCRIPCIO'];
+      $precio = $elemento['PRECIO'];
+      $articulo_id = $elemento['ARTICULOID'];
+      $ubicacion = $elemento['UBICACION'];
+      $tipo = "traspaso";
+      //   $observaciones = '';
+      $estatus = 'activo';
+      $precio_unitario = ($precio / $cantidad);
+
+      $query = "INSERT INTO `ser_refacciones`(`clave`, `cantidad`, `unidad`, `descripcion`, `precio`, `importe`, `descuento`, `tipo`, `estatus`, `idventa`, `fecha`, `id_inyector`, `ID_servicio_inyector`, `IDDOC`) 
+                          VALUES (:clave,:cantidad, :unidad, :descripcion, :precio_unitario, :importe, 0, :tipo , :estatus, 0, now(), 0, :ID_servicio_inyector, :DOCID)";
+
+      $consulta = $this->db->prepare($query);
+      $consulta->bindParam(':clave', $clave);
+      $consulta->bindParam(':cantidad', $cantidad);
+      $consulta->bindParam(':unidad', $unidad);
+      $consulta->bindParam(':descripcion', $descripcion);
+      $consulta->bindParam(':importe', $precio);
+      $consulta->bindParam(':precio_unitario', $precio_unitario);
+      $consulta->bindParam(':tipo', $tipo);
+      $consulta->bindParam(':estatus', $estatus);
+      $consulta->bindParam(':ID_servicio_inyector', $ID_servicio_inyector);
+      $consulta->bindParam(':DOCID', $DOCID);
+
+      if (!$consulta->execute()) {
+        throw new Exception("Error al insertar el registro con la clave: " . $clave);
+      }
+    }
+
+    return "Inserciones realizadas exitosamente.";
+  }
+
+
+
+
+  function recorrerEInsertarTraspasoInyector($listaContenidoTraspaso, $ID_inyector, $DOCID)
+  {
+
+    $listaContenidoTraspaso = json_encode($listaContenidoTraspaso);
+    $datos_decodificados = json_decode($listaContenidoTraspaso, true);
+
+    if ($datos_decodificados === null) {
+      throw new Exception("Error al decodificar los datos JSON.");
+    }
+
+    foreach ($datos_decodificados as $elemento) {
+      $clave = $elemento['CLAVE'];
+      $cantidad = $elemento['DESCANTIDAD'];
+      $unidad = $elemento['UNIDAD'];
+      $descripcion = $elemento['DESCRIPCIO'];
+      $precio = $elemento['PRECIO'];
+      $articulo_id = $elemento['ARTICULOID'];
+      $ubicacion = $elemento['UBICACION'];
+      $tipo = "traspaso";
+      //   $observaciones = '';
+      $estatus = 'activo';
+      $precio_unitario = ($precio / $cantidad);
+
+      $query = "INSERT INTO `ser_refacciones`(`clave`, `cantidad`, `unidad`, `descripcion`, `precio`, `importe`, `descuento`, `tipo`, `estatus`, `idventa`, `fecha`, `id_inyector`, `ID_servicio_inyector`, `IDDOC`) 
+                          VALUES (:clave,:cantidad, :unidad, :descripcion, :precio_unitario, :importe, 0, :tipo , :estatus, 0, now(), :ID_inyector, 0, :DOCID)";
+
+      $consulta = $this->db->prepare($query);
+      $consulta->bindParam(':clave', $clave);
+      $consulta->bindParam(':cantidad', $cantidad);
+      $consulta->bindParam(':unidad', $unidad);
+      $consulta->bindParam(':descripcion', $descripcion);
+      $consulta->bindParam(':importe', $precio);
+      $consulta->bindParam(':precio_unitario', $precio_unitario);
+      $consulta->bindParam(':tipo', $tipo);
+      $consulta->bindParam(':estatus', $estatus);
+      $consulta->bindParam(':ID_inyector', $ID_inyector);
+      $consulta->bindParam(':DOCID', $DOCID);
+
+      if (!$consulta->execute()) {
+        throw new Exception("Error al insertar el registro con la clave: " . $clave);
+      }
+    }
+
+    return "Inserciones realizadas exitosamente.";
+  }
+
+
   function AsinarTraspasoAServicio($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA)
   {
 
@@ -3395,6 +3524,72 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
     }
     return $this->modelo;
   }
+
+
+  function ConsultaTraspasosPorServicioInyector($ID_serv_inyector)
+  {
+
+    $query = "SELECT * FROM traspasos  WHERE ID_serv_inyector = $ID_serv_inyector AND STATUS_TRASPASO = 1 ORDER BY ID_traspaso DESC ";
+
+    $consulta = $this->db->prepare($query);
+    $consulta->execute();
+    while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
+
+      $this->modelo[] = $filas;
+    }
+    return $this->modelo;
+  }
+
+
+
+  function ConsultaTraspasosPorInyector($ID_inyector)
+  {
+
+    $query = "SELECT * FROM traspasos  WHERE ID_inyector = $ID_inyector AND STATUS_TRASPASO = 1 ORDER BY ID_traspaso DESC ";
+
+    $consulta = $this->db->prepare($query);
+    $consulta->execute();
+    while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
+
+      $this->modelo[] = $filas;
+    }
+    return $this->modelo;
+  }
+
+
+
+
+  function GenerarPDFRecepcionInyector($idventa)
+   {
+  //   header("Location:  http://tallergeorgio.hopto.org:5611/georgiotemp/web/Controlador/ReportesPDF/PDFReporteCheckTecnico.php?idventa=$idventa&idcliente=$idcliente");
+    header("Location:  http://192.168.16.149:8888/taller/web/Controlador/ReportesPDF/PDFRecepcionInyector.php?idserv=$idventa");
+    exit();
+  }
+
+
+  function GenerarPDFSalidaInyector($idventa)
+  {
+    // header("Location:  http://tallergeorgio.hopto.org:5611/georgiotemp/web/Controlador/ReportesPDF/PDFReporteCheckTecnico.php?idventa=$idventa&idcliente=$idcliente");
+    header("Location:  http://192.168.16.149:8888/taller/web/Controlador/ReportesPDF/PDFSalidaInyector.php?idserv=$idventa");
+    exit();
+  }
+
+  function GenerarPDFRefaccionesDeInyector($idventa)
+  {
+    // header("Location:  http://tallergeorgio.hopto.org:5611/georgiotemp/web/Controlador/ReportesPDF/PDFReporteCheckTecnico.php?idventa=$idventa&idcliente=$idcliente");
+    header("Location:  http://192.168.16.149:8888/taller/web/Controlador/ReportesPDF/PDFRefaccionesInyector.php?idserv=$idventa");
+    exit();
+  }
+  
+
+
+  function GenerarPDFManoDeObraDeInyector($idventa)
+  {
+    // header("Location:  http://tallergeorgio.hopto.org:5611/georgiotemp/web/Controlador/ReportesPDF/PDFReporteCheckTecnico.php?idventa=$idventa&idcliente=$idcliente");
+    header("Location:  http://192.168.16.149:8888/taller/web/Controlador/ReportesPDF/PDFMecanicosInyector.php?idserv=$idventa");
+    exit();
+  }
+  
 
 
 

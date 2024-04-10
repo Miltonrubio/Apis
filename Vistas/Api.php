@@ -4004,6 +4004,230 @@
 
 
 
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Asignar Traspaso a servicio de inyector </label></div>
+        <input type="hidden" name="opcion" value="141">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="141"<br />
+          name="ID_serv_inyector" value="35"<br />
+          name="DOCID" value="48354"<br />
+          name="NOMBRE" value="RP- CRISPIN INV"<br />
+          name="EMISOR" value="AH"<br />
+          name="NUMERO" value="3017"<br />
+          name="ESTADO" value="I"<br />
+          name="FECHA" value="2024-04-02"<br />
+          name="FECCAN" value="0000-00-00"<br />
+          name="TOTAL" value="77.42"<br />
+          name="NOTA" value="USO LABORATORIO TURBOS"<br />
+
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="NOTA" value="USO LABORATORIO TURBOS">
+          <label for="floatingInput">NOTA</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="TOTAL" value="77.42">
+          <label for="floatingInput">TOTAL</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="FECCAN" value="0000-00-00">
+          <label for="floatingInput">FECCAN</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="FECHA" value="2024-04-02">
+          <label for="floatingInput">FECHA</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ESTADO" value="I">
+          <label for="floatingInput">ESTADO</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="NUMERO" value="3017">
+          <label for="floatingInput">NUMERO</label>
+        </div>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="EMISOR" value="AH">
+          <label for="floatingInput">EMISOR</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="NOMBRE" value="RP- CRISPIN INV">
+          <label for="floatingInput">NOMBRE</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_serv_inyector" value="35">
+          <label for="floatingInput">ID_serv_inyector</label>
+        </div>
+
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="DOCID" value="48354">
+          <label for="floatingInput">DOCID</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Consultar Traspasos de un servicio de inyector</label></div>
+        <input type="hidden" name="opcion" value="142">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="142"<br />
+          name="id_serv_inyector" value="34"<br />
+
+
+        </code><br>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="id_serv_inyector" value="34">
+          <label for="floatingInput">id_serv_inyector</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Asignar Traspaso a un inyector </label></div>
+        <input type="hidden" name="opcion" value="143">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="143"<br />
+          name="ID_inyector" value="38"<br />
+          name="DOCID" value="48354"<br />
+          name="NOMBRE" value="RP- CRISPIN INV"<br />
+          name="EMISOR" value="AH"<br />
+          name="NUMERO" value="3017"<br />
+          name="ESTADO" value="I"<br />
+          name="FECHA" value="2024-04-02"<br />
+          name="FECCAN" value="0000-00-00"<br />
+          name="TOTAL" value="77.42"<br />
+          name="NOTA" value="USO LABORATORIO TURBOS"<br />
+
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="NOTA" value="USO LABORATORIO TURBOS">
+          <label for="floatingInput">NOTA</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="TOTAL" value="77.42">
+          <label for="floatingInput">TOTAL</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="FECCAN" value="0000-00-00">
+          <label for="floatingInput">FECCAN</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="FECHA" value="2024-04-02">
+          <label for="floatingInput">FECHA</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ESTADO" value="I">
+          <label for="floatingInput">ESTADO</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="NUMERO" value="3017">
+          <label for="floatingInput">NUMERO</label>
+        </div>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="EMISOR" value="AH">
+          <label for="floatingInput">EMISOR</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="NOMBRE" value="RP- CRISPIN INV">
+          <label for="floatingInput">NOMBRE</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_inyector" value="38">
+          <label for="floatingInput">ID_inyector</label>
+        </div>
+
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="DOCID" value="48354">
+          <label for="floatingInput">DOCID</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Consultar Traspasos de un Inyector</label></div>
+        <input type="hidden" name="opcion" value="144">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="144"<br />
+          name="ID_inyector" value="38"<br />
+
+
+        </code><br>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_inyector" value="38">
+          <label for="floatingInput">ID_inyector</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
     <script src="../librerias/Bootstrap5/js/bootstrap.min.js"></script>
 </body>
 
