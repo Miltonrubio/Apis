@@ -3044,13 +3044,13 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
   }
 
 
-  function ConsultarManoDeObraInyectores($ID_inyector)
+  function ConsultarManoDeObraInyectores($id_inyector)
   {
 
     $query = "SELECT pro_bitacora.*,   adm_usuarios.nombre, adm_usuarios.idusuario, adm_usuarios.foto
     FROM pro_bitacora 
-    JOIN adm_usuarios ON pro_bitacora.id_inyector = adm_usuarios.idusuario
-    WHERE id_inyector = $ID_inyector";
+   LEFT JOIN adm_usuarios ON pro_bitacora.idpersonal = adm_usuarios.idusuario
+    WHERE id_inyector = $id_inyector";
 
     $consulta = $this->db->prepare($query);
     $consulta->execute();
@@ -3064,16 +3064,15 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
 
 
 
-  function AgregarManoDeObraInyector($ID_inyector, $observaciones, $ID_mecanico)
+  function AgregarManoDeObraInyector($ID_inyector, $observaciones, $ID_mecanico, $costo)
   {
-    $query = " INSERT INTO `pro_bitacora`(`idpersonal`, `idactividad`, `id_servicio`, `fecha`, `horainicio`, `observaciones`, `estatus`, `comentarios`, `id_inyector`) VALUES (:ID_mecanico, 0, 0, now(), now(), :observaciones, :status, :comentarios, :ID_inyector)";
+    $query = " INSERT INTO `pro_bitacora`(`idpersonal`, `idactividad`, `id_servicio`, `fecha`, `horainicio`, `observaciones`, `estatus`, `id_inyector`, `costo`) VALUES (:ID_mecanico, 0, 0, now(), now(), :observaciones, :status, :ID_inyector, :costo)";
     $status = 'Pendiente';
-    $comentarios = 'comentarios';
     $result = $this->db->prepare($query);
     $result->bindParam(':ID_inyector', $ID_inyector);
     $result->bindParam(':observaciones', $observaciones);
+    $result->bindParam(':costo', $costo);
     $result->bindParam(':status', $status);
-    $result->bindParam(':comentarios', $comentarios);
     $result->bindParam(':ID_mecanico', $ID_mecanico);
     $result->execute();
 
@@ -3592,6 +3591,20 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
   
 
 
+
+
+  function EditarActividadDeInyector($idbitacora, $actividadCorregida, $nuevoCosto)
+  {
+    $query = "UPDATE pro_bitacora SET observaciones = '$actividadCorregida', costo = $nuevoCosto WHERE idbitacora = $idbitacora";
+
+    $result = $this->db->prepare($query);
+
+    if ($result->execute()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 
 

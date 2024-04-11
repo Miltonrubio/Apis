@@ -953,8 +953,9 @@ if (!empty($_POST['opcion'])) {
 
       $ID_inyector = $_POST['ID_inyector'];
       $observaciones = $_POST['observaciones'];
+      $costo = $_POST['costo'];
       $ID_mecanico = $_POST['ID_mecanico'];
-      $control->AgregarManoDeObraInyector($ID_inyector, $observaciones, $ID_mecanico);
+      $control->AgregarManoDeObraInyector($ID_inyector, $observaciones, $ID_mecanico, $costo);
       break;
 
     case 126:
@@ -1169,5 +1170,16 @@ if (!empty($_POST['opcion'])) {
       $ID_serv_inyector = $_POST['ID_serv_inyector'];
       $control->GenerarPDFManoDeObraDeInyector($ID_serv_inyector);
       break;
+
+
+case 149: 
+
+  $idbitacora = $_POST['idbitacora'];
+  $actividadCorregida = $_POST['actividadCorregida'];
+  $nuevoCosto = $_POST['nuevoCosto'];
+  $control-> EditarActividadDeInyector($idbitacora, $actividadCorregida, $nuevoCosto);
+
+  break;
+
   }
 }

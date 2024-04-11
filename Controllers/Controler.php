@@ -1883,12 +1883,12 @@ class Peticiones
         echo json_encode($resul);
     }
 
-    function ConsultarManoDeObraInyectores($ID_inyector)
+    function ConsultarManoDeObraInyectores($id_inyector)
     {
 
         $model = new ModeloBD();
 
-        $dato = $model->ConsultarManoDeObraInyectores($ID_inyector);
+        $dato = $model->ConsultarManoDeObraInyectores($id_inyector);
         if ($dato) {
             $resul = $dato;
         } else {
@@ -1898,11 +1898,11 @@ class Peticiones
     }
 
 
-    function AgregarManoDeObraInyector($ID_inyector, $observaciones, $ID_mecanico)
+    function AgregarManoDeObraInyector($ID_inyector, $observaciones, $ID_mecanico, $costo)
     {
         $model = new ModeloBD();
 
-        $dato = $model->AgregarManoDeObraInyector($ID_inyector, $observaciones, $ID_mecanico);
+        $dato = $model->AgregarManoDeObraInyector($ID_inyector, $observaciones, $ID_mecanico, $costo);
         if ($dato) {
             $resul = 'Exitoso';
         } else {
@@ -2291,5 +2291,16 @@ function AsinarTraspasoAInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO
         echo json_encode($resul);
     }
 
+    function  EditarActividadDeInyector($idbitacora, $actividadCorregida, $nuevoCosto){
+        
+        $model = new ModeloBD();
+        $dato = $model->EditarActividadDeInyector($idbitacora, $actividadCorregida, $nuevoCosto);
+        if ($dato) {
+            $resul = 'exitoso';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
 
 }

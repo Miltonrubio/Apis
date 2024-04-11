@@ -3448,7 +3448,7 @@
         <code>
           <br />
           method = "POST"<br />
-          name="opcion" value="124"<br />
+          name="opcion" value="124"<br /> 
           name="ID_inyector" value="37"<br />
         </code><br>
 
@@ -3475,6 +3475,7 @@
           name="opcion" value="125"<br />
           name="ID_inyector" value="37"<br />
           name="observaciones" value="observaciones"<br />
+          name="costo" value="costo"<br />
           name="ID_mecanico" value="ID_mecanico"<br />
         </code><br>
 
@@ -3487,6 +3488,12 @@
         <div class="form-floating contenedor-inputs padre"><br>
           <input type="text" name="observaciones" value="observaciones">
           <label for="floatingInput">observaciones</label>
+        </div>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="costo" value="100">
+          <label for="floatingInput">costo</label>
         </div>
 
 
@@ -4226,6 +4233,163 @@
         <button type="submit" class="btn btn-primary">consultar</button>
       </form>
     </div>
+
+
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Consultar PDF Recepcion Inyectores</label></div>
+        <input type="hidden" name="opcion" value="145">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="145"<br />
+          name="ID_serv_inyector" value="38"<br />
+
+
+        </code><br>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_serv_inyector" value="38">
+          <label for="floatingInput">ID_serv_inyector</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Consultar PDF Salida Inyectores</label></div>
+        <input type="hidden" name="opcion" value="146">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="146"<br />
+          name="ID_serv_inyector" value="38"<br />
+
+
+        </code><br>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_serv_inyector" value="38">
+          <label for="floatingInput">ID_serv_inyector</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Consultar PDF Refacciones Inyectores</label></div>
+        <input type="hidden" name="opcion" value="147">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="147"<br />
+          name="ID_serv_inyector" value="38"<br />
+
+
+        </code><br>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_serv_inyector" value="38">
+          <label for="floatingInput">ID_serv_inyector</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Consultar PDF Mano De Obra Inyectores</label></div>
+        <input type="hidden" name="opcion" value="148">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="148"<br />
+          name="ID_serv_inyector" value="38"<br />
+
+
+        </code><br>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_serv_inyector" value="38">
+          <label for="floatingInput">ID_serv_inyector</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Corregir Mano De Obra de Inyectores </label></div>
+        <input type="hidden" name="opcion" value="149">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="149"<br /> 
+          name="idbitacora" value="37"<br />
+          name="actividadCorregida" value="Activ"<br />
+          name="nuevoCosto" value="35"<br />
+
+          
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="idbitacora" value="37">
+          <label for="floatingInput">idbitacora</label>
+        </div>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="actividadCorregida" value="Activ">
+          <label for="floatingInput">actividadCorregida</label>
+        </div>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="nuevoCosto" value="35">
+          <label for="floatingInput">nuevoCosto</label>
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+
+
+
 
 
     <script src="../librerias/Bootstrap5/js/bootstrap.min.js"></script>
