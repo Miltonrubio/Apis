@@ -4389,7 +4389,151 @@
 
 
 
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Asignar Alarma a Gaveta</label></div>
+        <input type="hidden" name="opcion" value="150">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="150"<br /> 
+          name="id_gabeta" value="37"<br />
+          name="frecuencia" value="7"<br />
+        </code><br>
 
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="id_gabeta" value="37">
+          <label for="floatingInput">id_gabeta</label>
+        </div>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="frecuencia" value="7">
+          <label for="floatingInput">frecuencia</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Finalizar revision de Gaveta y actualizar fecha de revision</label></div>
+        <input type="hidden" name="opcion" value="151">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="151"<br /> 
+          name="iddocga" value="37"<br />
+          name="id_gabeta" value="7"<br />
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="iddocga" value="37">
+          <label for="floatingInput">iddocga</label>
+        </div>
+
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="id_gabeta" value="7">
+          <label for="floatingInput">id_gabeta</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Editar Gaveta </label></div>
+        <input type="hidden" name="opcion" value="152">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="152"<br /> 
+          name="EditdescripcionGaveta" value="EditdescripcionGaveta"<br />
+          name="EditnombreGaveta" value="EditnombreGaveta"<br />
+          name="idgabeta" value="67"<br />
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="EditnombreGaveta" value="EditnombreGaveta">
+          <label for="floatingInput">EditnombreGaveta</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="idgabeta" value="67">
+          <label for="floatingInput">idgabeta</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="EditdescripcionGaveta" value="EditdescripcionGaveta">
+          <label for="floatingInput">EditdescripcionGaveta</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>PDF de Contenido de Gaveta </label></div>
+        <input type="hidden" name="opcion" value="153">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="153"<br /> 
+          name="idgabeta" value="67"<br />
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="id_gabeta" value="67">
+          <label for="floatingInput">id_gabeta</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>PDF de Inventarios de Gaveta </label></div>
+        <input type="hidden" name="opcion" value="154">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="154"<br /> 
+          name="idgabeta" value="67"<br />
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="id_gabeta" value="67">
+          <label for="floatingInput">id_gabeta</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
 
 
     <script src="../librerias/Bootstrap5/js/bootstrap.min.js"></script>

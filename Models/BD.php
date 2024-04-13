@@ -863,6 +863,27 @@ ORDER BY G.id_gabeta DESC";
     return $this->modelo;
   }
 
+  function MostrarHerramientasPorGabeta($id_gabeta)
+  {
+
+      $query = "SELECT * FROM `inv_herramienta` 
+      LEFT JOIN  inv_cajones ON inv_cajones.id_cajon = inv_herramienta.id_cajon
+      WHERE inv_cajones.id_gabeta = :id_gabeta AND inv_herramienta.inventario != 'Eliminado'";
+
+      $result = $this->db->prepare($query);
+      $result->bindParam(':id_gabetas', $id_gabeta);
+      $result->execute();
+      while ($filas = $result->fetch(PDO::FETCH_ASSOC)) {
+          $this->modelo[] = $filas;
+      }
+      return $this->modelo;
+  }
+
+
+
+
+  
+
 
   function AgregarHerramienta($nombreHerramienta, $descripHerramienta, $cantidadHerramientas, $id_cajon)
   {
@@ -1082,6 +1103,88 @@ ORDER BY G.id_gabeta DESC";
   }
 
 
+
+
+  function LevantarInventario($idgabeta, $idencargado, $mecanico)
+  {
+      try {
+          $this->db->beginTransaction();
+          $queryInsertDocGabetas = "INSERT INTO inv_doc_gabetas (fecha, hora, idgabeta, idusuario, idencargado, estado) VALUES ( CURDATE(), CURTIME(), '$idgabeta', '$mecanico', '$idencargado', 'pendiente')";
+
+          $resulDocGabeta = $this->db->prepare($queryInsertDocGabetas);
+
+          if ($resulDocGabeta->execute()) {
+
+
+              $iddocga = $this->db->lastInsertId();
+
+              $queryRecorrerCajones = "SELECT * FROM inv_cajones WHERE id_gabeta = :idgabeta";
+
+              $resulGavetas = $this->db->prepare($queryRecorrerCajones);
+              $resulGavetas->bindParam(':idgabeta', $idgabeta, PDO::PARAM_INT);
+              $resulGavetas->execute();
+
+              if ($resulGavetas->rowCount() > 0) {
+
+                  while ($row = $resulGavetas->fetch(PDO::FETCH_ASSOC)) {
+
+                      $idcajon_actual = $row["id_cajon"];
+                      $queryHerramienta = "SELECT * FROM inv_herramienta WHERE id_cajon = :idcajon_actual AND inventario = 'alta' ";
+                      $resultHerramienta = $this->db->prepare($queryHerramienta);
+                      $resultHerramienta->bindParam(':idcajon_actual', $idcajon_actual, PDO::PARAM_INT);
+                      $resultHerramienta->execute();
+
+                      if ($resultHerramienta->rowCount() > 0) {
+
+                          while ($rowHerramienta = $resultHerramienta->fetch(PDO::FETCH_ASSOC)) {
+
+                              $idHerramienta = $rowHerramienta["idHerramienta"];
+                              $foto = $rowHerramienta["foto"];
+                              $nombre = $rowHerramienta["nombre"];
+                              $descripcion = $rowHerramienta["descripcion"];
+                              $costo = $rowHerramienta["costo"];
+                              $piezas = $rowHerramienta["piezas"];
+                              //  $estado = $rowHerramienta["estado"];
+                              $estado = "pendiente";
+                              $anomalia = $rowHerramienta["anomalia"];
+                              $inventario = $rowHerramienta["inventario"];
+                              $estatus_cobro = $rowHerramienta["estatus_cobro"];
+                              $id_cajon_herramienta = $rowHerramienta["id_cajon"];
+
+                              $queryInsertInventario = "INSERT INTO inv_herramienta_inventario (iddoc, idgabeta, idcajon, idherramienta, herramienta, idmecanico, idencargado, cantidad, estado, fecha, foto, estatus) VALUES (:iddocga, :idgabeta, :id_cajon_herramienta, :idHerramienta, :nombre, :idMecanico, :idencargado, :piezas, :estado, CURDATE(), :foto, 'activo')";
+                              $resultInsertInventario = $this->db->prepare($queryInsertInventario);
+                              $resultInsertInventario->bindParam(':iddocga', $iddocga);
+                              $resultInsertInventario->bindParam(':idgabeta', $idgabeta);
+                              $resultInsertInventario->bindParam(':id_cajon_herramienta', $id_cajon_herramienta);
+                              $resultInsertInventario->bindParam(':idHerramienta', $idHerramienta);
+                              $resultInsertInventario->bindParam(':nombre', $nombre);
+                              $resultInsertInventario->bindParam(':idencargado', $idencargado);
+                              $resultInsertInventario->bindParam(':idMecanico', $mecanico);
+                              $resultInsertInventario->bindParam(':piezas', $piezas);
+                              $resultInsertInventario->bindParam(':estado', $estado);
+                              $resultInsertInventario->bindParam(':foto', $foto);
+
+                              $resultInsertInventario->execute();
+                          }
+                      }
+                  }
+              }
+          }
+
+          $this->db->commit();
+
+          return true;
+      } catch (\Throwable $th) {
+
+          $this->db->rollBack();
+          return false;
+      }
+  }
+
+
+
+
+/*
   function LevantarInventario($idgabeta, $idencargado, $mecanico)
   {
 
@@ -1160,13 +1263,16 @@ ORDER BY G.id_gabeta DESC";
       return false;
     }
   }
+  */
+
 
   function ConsultarTodosLosInventariosPorGaveta($idgabeta)
   {
-    $query = "SELECT idg.*, ihi.*,idg.estado as EstadoInventario, M.nombre as NombreMecanico, M.idusuario as IDMecanico
+    $query = "SELECT idg.*, ihi.*,idg.estado as EstadoInventario, cajones.nombre as NombreCajon, M.nombre as NombreMecanico, M.idusuario as IDMecanico
         FROM inv_doc_gabetas idg
         LEFT JOIN inv_herramienta_inventario ihi ON idg.iddocga = ihi.iddoc 
         LEFT JOIN adm_usuarios M ON ihi.idencargado = M.idusuario
+        LEFT JOIN inv_cajones cajones ON ihi.idcajon = cajones.id_cajon
         WHERE (idg.idgabeta = '$idgabeta')
         ORDER BY idg.iddocga DESC";
 
@@ -1213,6 +1319,7 @@ ORDER BY G.id_gabeta DESC";
             'cantidad' => $row['cantidad'],
             'comentarios' => $row['comentarios'],
             'idcajon' => $row['idcajon'],
+            'NombreCajon' => $row['NombreCajon'],
             'foto' => $row['foto'],
           );
 
@@ -3607,6 +3714,94 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
   }
 
 
+
+  function asignarAlarmaAGaveta($id_gabeta, $frecuencia)
+  {
+      $query = "UPDATE `inv_gabeta` SET `frecuencia_dias`=:frecuencia WHERE id_gabeta = :id_gabeta";
+      $result = $this->db->prepare($query);
+      $result->bindParam(':id_gabeta', $id_gabeta);
+      $result->bindParam(':frecuencia', $frecuencia);
+      
+      if ($result->execute()) {
+        return true;
+      } else {
+        return false;
+      }
+
+  }
+
+
+
+
+
+  function FinalizarRevisionInventario($iddocga)
+  {
+      $estado = "Revisado";
+      $query = "UPDATE inv_doc_gabetas SET estado = :estado WHERE iddocga = :iddocga";
+      $result = $this->db->prepare($query);
+      $result->bindParam(':iddocga', $iddocga);
+      $result->bindParam(':estado', $estado);
+      $result->execute();
+
+      $num_rows_affected = $result->rowCount();
+
+      return $num_rows_affected > 0 ? true : false;
+  }
+
+
+
+  function ActualizarFechaRev($id_gabeta)
+  {
+      $query = "UPDATE inv_gabeta SET fecha_ultimo_inv = NOW() WHERE id_gabeta = $id_gabeta";
+
+      $result = $this->db->prepare($query);
+
+      if ($result->execute()) {
+          return true;
+      } else {
+          return false;
+      }
+  }
+
+
+
+
+
+  function EditarGaveta($EditnombreGaveta, $EditdescripcionGaveta, $idgabeta)
+  {
+
+      $query = "UPDATE inv_gabeta SET nombre=:EditnombreGaveta, descripcion = :EditdescripcionGaveta WHERE id_gabeta = :idgabeta ";
+      $result = $this->db->prepare($query);
+      $result->bindParam(':EditnombreGaveta', $EditnombreGaveta);
+      $result->bindParam(':EditdescripcionGaveta', $EditdescripcionGaveta);
+      $result->bindParam(':idgabeta', $idgabeta);
+
+      $result->execute();
+      if ($result) {
+          return true;
+      } else {
+          return false;
+      }
+  }
+
+
+
+
+
+  function mostrarPDFDeGaveta($id_gabeta) 
+    {
+      header("Location: http://192.168.16.153:8888/taller/web/Controlador/ReportesPDF/pdfContenidoGaveta.php?id_gabeta=$id_gabeta");
+      exit();
+    }
+  
+
+    function mostrarPDFDeInventarios($id_gabeta) 
+    {
+      header("Location: http://192.168.16.153:8888/taller/web/Controlador/ReportesPDF/pdfInventariosPorGaveta.php?id_gabeta=$id_gabeta");
+      exit();
+    }
+  
+  
 
 
 

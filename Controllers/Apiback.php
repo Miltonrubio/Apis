@@ -1172,14 +1172,68 @@ if (!empty($_POST['opcion'])) {
       break;
 
 
-case 149: 
+    case 149:
 
-  $idbitacora = $_POST['idbitacora'];
-  $actividadCorregida = $_POST['actividadCorregida'];
-  $nuevoCosto = $_POST['nuevoCosto'];
-  $control-> EditarActividadDeInyector($idbitacora, $actividadCorregida, $nuevoCosto);
+      $idbitacora = $_POST['idbitacora'];
+      $actividadCorregida = $_POST['actividadCorregida'];
+      $nuevoCosto = $_POST['nuevoCosto'];
+      $control->EditarActividadDeInyector($idbitacora, $actividadCorregida, $nuevoCosto);
 
+      break;
+
+
+    case 150:
+      $id_gabeta = $_POST['id_gabeta'];
+      $frecuencia = $_POST['frecuencia'];
+      $control->asignarAlarmaAGaveta($id_gabeta, $frecuencia);
+      break;
+
+
+    case 151:
+      $iddocga = $_POST['iddocga'];
+      $id_gabeta = $_POST['id_gabeta'];
+      $control->FinalizarRevisionInventario($iddocga, $id_gabeta);
+      break;
+
+
+    case 152:
+
+      $idgabeta = $_POST['idgabeta'];
+      $EditdescripcionGaveta = $_POST['EditdescripcionGaveta'];
+      $EditnombreGaveta = $_POST['EditnombreGaveta'];
+      $control->EditarGaveta($EditnombreGaveta, $EditdescripcionGaveta, $idgabeta);
+      break;
+
+
+case 153 :
+
+  $id_gabeta = $_POST['id_gabeta'];
+  $control->mostrarPDFDeGaveta($id_gabeta);
   break;
+
+
+
+case 154 :
+
+  $id_gabeta = $_POST['id_gabeta'];
+  $control->mostrarPDFDeInventarios($id_gabeta);
+  break;
+
+/*
+
+function mostrarPDFDeInventarios(id_gabeta) {
+  var url = '../Controlador/ReportesPDF/pdfInventariosPorGaveta.php?id_gabeta=' + id_gabeta;
+  window.open(url, '_blank');
+}
+
+
+
+function mostrarPDFDeGaveta(id_gabeta) {
+  var url = '../Controlador/ReportesPDF/pdfContenidoGaveta.php?id_gabeta=' + id_gabeta;
+  window.open(url, '_blank');
+}
+
+*/
 
   }
 }

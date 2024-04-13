@@ -640,6 +640,7 @@ class Peticiones
         }
         echo json_encode($resul);
     }
+    
 
     function AgregarHerramienta($nombreHerramienta, $descripHerramienta, $cantidadHerramientas, $id_cajon)
     {
@@ -692,7 +693,7 @@ class Peticiones
         echo json_encode($resul);
     }
 
-
+/*
     function EliminarGaveta($id_gabeta)
     {
         $model = new ModeloBD();
@@ -704,6 +705,29 @@ class Peticiones
         }
         echo json_encode($resul);
     }
+*/
+
+
+    function EliminarGaveta($id_gaveta)
+    {
+        $model = new ModeloBD();
+        
+        $herramientas = $model->MostrarHerramientasPorGabeta($id_gaveta);
+        
+        if (!empty($herramientas)) {
+            $resul = 'Primero debes eliminar todas las herramientas asociadas a esta gaveta';
+        } else {
+            $dato = $model->EliminarGavetaYCajones($id_gaveta);
+            if ($dato) {
+                $resul = 'exitoso';
+            } else {
+                $resul = 'fallo';
+            }
+        }
+        echo json_encode($resul);
+    }
+    
+
 
     function ConsultarTodasLasHerramientas()
     {
@@ -2106,29 +2130,29 @@ class Peticiones
     }
 
 
-function AsinarTraspasoAInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA){
+    function AsinarTraspasoAInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA)
+    {
 
 
-    $model = new ModeloBD();
+        $model = new ModeloBD();
 
-    $dato = $model->AsinarTraspasoInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+        $dato = $model->AsinarTraspasoInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
 
-    if ($dato) {
+        if ($dato) {
 
-        $listaContenido = $model->consultarContenidoTraspaso($DOCID);
+            $listaContenido = $model->consultarContenidoTraspaso($DOCID);
 
-        try {
-            $respuestaRecorrido = $model->recorrerEInsertarTraspasoInyector($listaContenido, $ID_inyector, $DOCID);
-            $resul = $respuestaRecorrido;
-        } catch (Exception $e) {
-            $resul = "El error es " . $e->getMessage();
+            try {
+                $respuestaRecorrido = $model->recorrerEInsertarTraspasoInyector($listaContenido, $ID_inyector, $DOCID);
+                $resul = $respuestaRecorrido;
+            } catch (Exception $e) {
+                $resul = "El error es " . $e->getMessage();
+            }
+        } else {
+            $resul = 'fallo';
         }
-    } else {
-        $resul = 'fallo';
+        echo json_encode($resul);
     }
-    echo json_encode($resul);
-
-}
 
 
 
@@ -2215,7 +2239,7 @@ function AsinarTraspasoAInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO
 
 
             $respustaLista =   $model->EliminarRefaccionesTraspasos($DOCID);
-            
+
             if ($respustaLista) {
 
                 $resul = 'Exitoso';
@@ -2291,8 +2315,9 @@ function AsinarTraspasoAInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO
         echo json_encode($resul);
     }
 
-    function  EditarActividadDeInyector($idbitacora, $actividadCorregida, $nuevoCosto){
-        
+    function  EditarActividadDeInyector($idbitacora, $actividadCorregida, $nuevoCosto)
+    {
+
         $model = new ModeloBD();
         $dato = $model->EditarActividadDeInyector($idbitacora, $actividadCorregida, $nuevoCosto);
         if ($dato) {
@@ -2303,4 +2328,84 @@ function AsinarTraspasoAInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO
         echo json_encode($resul);
     }
 
+
+
+    function asignarAlarmaAGaveta($id_gabeta, $frecuencia)
+    {
+        $model = new ModeloBD();
+        $dato = $model->asignarAlarmaAGaveta($id_gabeta, $frecuencia);
+        if ($dato) {
+            $resul = 'exitoso';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+    function FinalizarRevisionInventario($iddocga, $id_gabeta)
+    {
+
+        $model = new ModeloBD();
+
+        if ($dato = $model->FinalizarRevisionInventario($iddocga)) {
+
+            if ($model->ActualizarFechaRev($id_gabeta)) {
+
+                $response = 'exitoso';
+            } else {
+
+                $response = 'error';
+            }
+        } else {
+            $response = 'fallo';
+        }
+        echo $response;
+    }
+
+
+    function EditarGaveta($EditnombreGaveta, $EditdescripcionGaveta, $idgabeta)
+    {
+
+        $model = new ModeloBD();
+        $dato = $model->EditarGaveta($EditnombreGaveta, $EditdescripcionGaveta, $idgabeta);
+        if ($dato) {
+            $resul = 'exitoso';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+
+
+
+    function mostrarPDFDeGaveta($id_gabeta)
+    {
+
+        $model = new ModeloBD();
+        $dato = $model->mostrarPDFDeGaveta($id_gabeta);
+        if ($dato) {
+            $resul = 'exitoso';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+
+    function mostrarPDFDeInventarios($id_gabeta)
+    {
+
+        $model = new ModeloBD();
+        $dato = $model->mostrarPDFDeInventarios($id_gabeta);
+        if ($dato) {
+            $resul = 'exitoso';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
 }
