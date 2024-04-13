@@ -871,7 +871,7 @@ ORDER BY G.id_gabeta DESC";
       WHERE inv_cajones.id_gabeta = :id_gabeta AND inv_herramienta.inventario != 'Eliminado'";
 
       $result = $this->db->prepare($query);
-      $result->bindParam(':id_gabetas', $id_gabeta);
+      $result->bindParam(':id_gabeta', $id_gabeta);
       $result->execute();
       while ($filas = $result->fetch(PDO::FETCH_ASSOC)) {
           $this->modelo[] = $filas;
