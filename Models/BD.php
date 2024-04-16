@@ -1110,34 +1110,36 @@ ORDER BY G.id_gabeta DESC";
       try {
           $this->db->beginTransaction();
           $queryInsertDocGabetas = "INSERT INTO inv_doc_gabetas (fecha, hora, idgabeta, idusuario, idencargado, estado) VALUES ( CURDATE(), CURTIME(), '$idgabeta', '$mecanico', '$idencargado', 'pendiente')";
-
+  
           $resulDocGabeta = $this->db->prepare($queryInsertDocGabetas);
-
+  
           if ($resulDocGabeta->execute()) {
-
-
+  
               $iddocga = $this->db->lastInsertId();
-
+  
               $queryRecorrerCajones = "SELECT * FROM inv_cajones WHERE id_gabeta = :idgabeta";
-
+  
               $resulGavetas = $this->db->prepare($queryRecorrerCajones);
               $resulGavetas->bindParam(':idgabeta', $idgabeta, PDO::PARAM_INT);
               $resulGavetas->execute();
-
+  
               if ($resulGavetas->rowCount() > 0) {
-
+  
+                  $herramientasEncontradas = false; // Variable para verificar si se encontraron herramientas
+  
                   while ($row = $resulGavetas->fetch(PDO::FETCH_ASSOC)) {
-
+  
                       $idcajon_actual = $row["id_cajon"];
                       $queryHerramienta = "SELECT * FROM inv_herramienta WHERE id_cajon = :idcajon_actual AND inventario = 'alta' ";
                       $resultHerramienta = $this->db->prepare($queryHerramienta);
                       $resultHerramienta->bindParam(':idcajon_actual', $idcajon_actual, PDO::PARAM_INT);
                       $resultHerramienta->execute();
-
+  
                       if ($resultHerramienta->rowCount() > 0) {
-
+                          $herramientasEncontradas = true; // Se encontraron herramientas
+  
                           while ($rowHerramienta = $resultHerramienta->fetch(PDO::FETCH_ASSOC)) {
-
+  
                               $idHerramienta = $rowHerramienta["idHerramienta"];
                               $foto = $rowHerramienta["foto"];
                               $nombre = $rowHerramienta["nombre"];
@@ -1150,7 +1152,7 @@ ORDER BY G.id_gabeta DESC";
                               $inventario = $rowHerramienta["inventario"];
                               $estatus_cobro = $rowHerramienta["estatus_cobro"];
                               $id_cajon_herramienta = $rowHerramienta["id_cajon"];
-
+  
                               $queryInsertInventario = "INSERT INTO inv_herramienta_inventario (iddoc, idgabeta, idcajon, idherramienta, herramienta, idmecanico, idencargado, cantidad, estado, fecha, foto, estatus) VALUES (:iddocga, :idgabeta, :id_cajon_herramienta, :idHerramienta, :nombre, :idMecanico, :idencargado, :piezas, :estado, CURDATE(), :foto, 'activo')";
                               $resultInsertInventario = $this->db->prepare($queryInsertInventario);
                               $resultInsertInventario->bindParam(':iddocga', $iddocga);
@@ -1163,24 +1165,28 @@ ORDER BY G.id_gabeta DESC";
                               $resultInsertInventario->bindParam(':piezas', $piezas);
                               $resultInsertInventario->bindParam(':estado', $estado);
                               $resultInsertInventario->bindParam(':foto', $foto);
-
+  
                               $resultInsertInventario->execute();
                           }
                       }
                   }
+  
+                  if (!$herramientasEncontradas) {
+                      return "No se encontraron herramientas";
+                  }
               }
           }
-
+  
           $this->db->commit();
-
-          return true;
+  
+          return "success";
       } catch (\Throwable $th) {
-
+  
           $this->db->rollBack();
-          return false;
+          return "error";
       }
   }
-
+  
 
 
 

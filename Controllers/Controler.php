@@ -872,13 +872,17 @@ class Peticiones
     function LevantarInventario($idgabeta, $idencargado, $mecanico)
     {
         $model = new ModeloBD();
+      
+      
         $dato = $model->LevantarInventario($idgabeta, $idencargado, $mecanico);
-        if ($dato) {
+      
+      /*  if ($dato) {
             $resul = 'exitoso';
         } else {
             $resul = 'fallo';
         }
-        echo json_encode($resul);
+        */
+        echo ($dato);
     }
 
     function ConsultarTodosLosInventariosPorGaveta($idgabeta)
