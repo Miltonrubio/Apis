@@ -640,7 +640,7 @@ class Peticiones
         }
         echo json_encode($resul);
     }
-    
+
 
     function AgregarHerramienta($nombreHerramienta, $descripHerramienta, $cantidadHerramientas, $id_cajon)
     {
@@ -693,7 +693,7 @@ class Peticiones
         echo json_encode($resul);
     }
 
-/*
+    /*
     function EliminarGaveta($id_gabeta)
     {
         $model = new ModeloBD();
@@ -711,9 +711,9 @@ class Peticiones
     function EliminarGaveta($id_gaveta)
     {
         $model = new ModeloBD();
-        
+
         $herramientas = $model->MostrarHerramientasPorGabeta($id_gaveta);
-        
+
         if (!empty($herramientas)) {
             $resul = 'Primero debes eliminar todas las herramientas asociadas a esta gaveta';
         } else {
@@ -726,7 +726,7 @@ class Peticiones
         }
         echo json_encode($resul);
     }
-    
+
 
 
     function ConsultarTodasLasHerramientas()
@@ -872,11 +872,11 @@ class Peticiones
     function LevantarInventario($idgabeta, $idencargado, $mecanico)
     {
         $model = new ModeloBD();
-      
-      
+
+
         $dato = $model->LevantarInventario($idgabeta, $idencargado, $mecanico);
-      
-      /*  if ($dato) {
+
+        /*  if ($dato) {
             $resul = 'exitoso';
         } else {
             $resul = 'fallo';
@@ -2115,47 +2115,63 @@ class Peticiones
     {
         $model = new ModeloBD();
 
-        $dato = $model->AsinarTraspasoAServicio($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
 
-        if ($dato) {
+        if ($model->validarQueNoSeaMismoTraspasoServicio($DOCID, $ID_serv)) {
 
-            $listaContenido = $model->consultarContenidoTraspaso($DOCID);
-
-            try {
-                $respuestaRecorrido = $model->recorrerEInsertarTraspaso($listaContenido, $ID_serv, $DOCID);
-                $resul = $respuestaRecorrido;
-            } catch (Exception $e) {
-                $resul = "El error es " . $e->getMessage();
-            }
+            $resul = "No puedes asignar el mismo traspaso a este Servicio";
         } else {
-            $resul = 'fallo';
+
+
+            $dato = $model->AsinarTraspasoAServicio($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+
+            if ($dato) {
+
+                $listaContenido = $model->consultarContenidoTraspaso($DOCID);
+
+                try {
+                    $respuestaRecorrido = $model->recorrerEInsertarTraspaso($listaContenido, $ID_serv, $DOCID);
+                    $resul = $respuestaRecorrido;
+                } catch (Exception $e) {
+                    $resul = "El error es " . $e->getMessage();
+                }
+            } else {
+                $resul = 'fallo';
+            }
         }
-        echo json_encode($resul);
+        echo ($resul);
     }
+
 
 
     function AsinarTraspasoAInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA)
     {
-
-
         $model = new ModeloBD();
 
-        $dato = $model->AsinarTraspasoInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+        if ($model->validarQueNoSeaMismoTraspaso($DOCID, $ID_inyector)) {
 
-        if ($dato) {
-
-            $listaContenido = $model->consultarContenidoTraspaso($DOCID);
-
-            try {
-                $respuestaRecorrido = $model->recorrerEInsertarTraspasoInyector($listaContenido, $ID_inyector, $DOCID);
-                $resul = $respuestaRecorrido;
-            } catch (Exception $e) {
-                $resul = "El error es " . $e->getMessage();
-            }
+            $resul = "No puedes asignar el mismo traspaso a este inyector";
         } else {
-            $resul = 'fallo';
+
+
+            $dato = $model->AsinarTraspasoInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+
+            if ($dato) {
+
+                $listaContenido = $model->consultarContenidoTraspaso($DOCID);
+
+                try {
+                    $respuestaRecorrido = $model->recorrerEInsertarTraspasoInyector($listaContenido, $ID_inyector, $DOCID);
+                    $resul = $respuestaRecorrido;
+                } catch (Exception $e) {
+                    $resul = "El error es " . $e->getMessage();
+                }
+            } else {
+                $resul = 'fallo';
+            }
         }
-        echo json_encode($resul);
+
+
+        echo ($resul);
     }
 
 
@@ -2164,22 +2180,30 @@ class Peticiones
     {
         $model = new ModeloBD();
 
-        $dato = $model->AsinarTraspasoAServicioDeInyector($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
 
-        if ($dato) {
 
-            $listaContenido = $model->consultarContenidoTraspaso($DOCID);
+        if ($model->validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv)) {
 
-            try {
-                $respuestaRecorrido = $model->recorrerEInsertarTraspasoDeSerInyector($listaContenido, $ID_serv, $DOCID);
-                $resul = $respuestaRecorrido;
-            } catch (Exception $e) {
-                $resul = "El error es " . $e->getMessage();
-            }
+            $resul = "No puedes asignar el mismo traspaso a este servicio de inyector";
         } else {
-            $resul = 'fallo';
+
+            $dato = $model->AsinarTraspasoAServicioDeInyector($ID_serv, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA);
+
+            if ($dato) {
+
+                $listaContenido = $model->consultarContenidoTraspaso($DOCID);
+
+                try {
+                    $respuestaRecorrido = $model->recorrerEInsertarTraspasoDeSerInyector($listaContenido, $ID_serv, $DOCID);
+                    $resul = $respuestaRecorrido;
+                } catch (Exception $e) {
+                    $resul = "El error es " . $e->getMessage();
+                }
+            } else {
+                $resul = 'fallo';
+            }
         }
-        echo json_encode($resul);
+        echo ($resul);
     }
 
 

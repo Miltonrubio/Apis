@@ -3374,6 +3374,50 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
     }
   }
 
+  function validarQueNoSeaMismoTraspaso($DOCID, $ID_inyector){
+    $query = "SELECT COUNT(*) as count FROM traspasos  WHERE DOCID = :docid AND ID_inyector = :inyector AND STATUS_TRASPASO = 1";
+
+    $consulta = $this->db->prepare($query);
+    $consulta->bindParam(':docid', $DOCID);
+    $consulta->bindParam(':inyector', $ID_inyector);
+    $consulta->execute();
+    
+    $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+
+    // Si count es mayor a 0, significa que se encontraron resultados
+    return $resultado['count'] > 0 ? true : false;
+}
+
+
+function validarQueNoSeaMismoTraspasoServicio($DOCID, $ID_serv){
+  $query = "SELECT COUNT(*) as count FROM traspasos  WHERE DOCID = :docid AND ID_servicio = :ID_serv AND STATUS_TRASPASO = 1";
+
+  $consulta = $this->db->prepare($query);
+  $consulta->bindParam(':docid', $DOCID);
+  $consulta->bindParam(':ID_serv', $ID_serv);
+  $consulta->execute();
+  
+  $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+
+  // Si count es mayor a 0, significa que se encontraron resultados
+  return $resultado['count'] > 0 ? true : false;
+}
+
+
+function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector){
+  $query = "SELECT COUNT(*) as count FROM traspasos  WHERE DOCID = :docid AND ID_serv_inyector = :ID_serv_inyector AND STATUS_TRASPASO = 1";
+
+  $consulta = $this->db->prepare($query);
+  $consulta->bindParam(':docid', $DOCID);
+  $consulta->bindParam(':ID_serv_inyector', $ID_serv_inyector);
+  $consulta->execute();
+  
+  $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+  return $resultado['count'] > 0 ? true : false;
+}
+
+
+
 
 
   function recorrerEInsertarTraspasoDeSerInyector($listaContenidoTraspaso, $ID_servicio_inyector, $DOCID)
