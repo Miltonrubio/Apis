@@ -3718,7 +3718,7 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
   function GenerarPDFRecepcionInyector($idventa)
    {
   //   header("Location:  http://tallergeorgio.hopto.org:5611/georgiotemp/web/Controlador/ReportesPDF/PDFReporteCheckTecnico.php?idventa=$idventa&idcliente=$idcliente");
-    header("Location:  http://192.168.16.149:8888/taller/web/Controlador/ReportesPDF/PDFRecepcionInyector.php?idserv=$idventa");
+    header("Location:   http://tallergeorgio.hopto.org:5611/georgioapp/georgio/web/Controlador/ReportesPDF/PDFRecepcionInyector.php?idserv=$idventa");
     exit();
   }
 
@@ -3726,14 +3726,14 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
   function GenerarPDFSalidaInyector($idventa)
   {
     // header("Location:  http://tallergeorgio.hopto.org:5611/georgiotemp/web/Controlador/ReportesPDF/PDFReporteCheckTecnico.php?idventa=$idventa&idcliente=$idcliente");
-    header("Location:  http://192.168.16.149:8888/taller/web/Controlador/ReportesPDF/PDFSalidaInyector.php?idserv=$idventa");
+    header("Location:   http://tallergeorgio.hopto.org:5611/georgioapp/georgio/web/Controlador/ReportesPDF/PDFSalidaInyector.php?idserv=$idventa");
     exit();
   }
 
   function GenerarPDFRefaccionesDeInyector($idventa)
   {
     // header("Location:  http://tallergeorgio.hopto.org:5611/georgiotemp/web/Controlador/ReportesPDF/PDFReporteCheckTecnico.php?idventa=$idventa&idcliente=$idcliente");
-    header("Location:  http://192.168.16.149:8888/taller/web/Controlador/ReportesPDF/PDFRefaccionesInyector.php?idserv=$idventa");
+    header("Location:   http://tallergeorgio.hopto.org:5611/georgioapp/georgio/web/Controlador/ReportesPDF/PDFRefaccionesInyector.php?idserv=$idventa");
     exit();
   }
   
@@ -3742,7 +3742,7 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
   function GenerarPDFManoDeObraDeInyector($idventa)
   {
     // header("Location:  http://tallergeorgio.hopto.org:5611/georgiotemp/web/Controlador/ReportesPDF/PDFReporteCheckTecnico.php?idventa=$idventa&idcliente=$idcliente");
-    header("Location:  http://192.168.16.149:8888/taller/web/Controlador/ReportesPDF/PDFMecanicosInyector.php?idserv=$idventa");
+    header("Location:  http://tallergeorgio.hopto.org:5611/georgioapp/georgio/web/Controlador/ReportesPDF/PDFMecanicosInyector.php?idserv=$idventa");
     exit();
   }
   
