@@ -4559,6 +4559,38 @@
     </div>
 
 
+
+    
+    
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Actualizar Token De Usuario Reparto </label></div>
+        <input type="hidden" name="opcion" value="156">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="156"<br /> 
+          name="ID_usuario" value="2"<br />
+          name="tokenreparto" value="2asf123asdasfd342131f31"<br />
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_usuario" value="2">
+          <label for="floatingInput">ID_usuario</label>
+        </div>
+
+        
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="tokenreparto" value="prueba">
+          <label for="floatingInput">tokenreparto</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
     <script src="../librerias/Bootstrap5/js/bootstrap.min.js"></script>
 </body>
 

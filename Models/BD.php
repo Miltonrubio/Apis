@@ -23,7 +23,7 @@ class ModeloBD
       $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } else {
 
-      $this->db = new PDO('mysql:host=192.168.16.252;dbname=georgio2023', 'admintaller', 'Taller2023');
+      $this->db = new PDO('mysql:host=192.168.16.252;dbname=georgio2024', 'admintaller', 'Taller2023');
       $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       //   }
       // $this->db = new PDO('mysql:host=localhost;dbname=georgio2023', 'admintaller', 'Taller2023');    
@@ -2681,7 +2681,7 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
 
   function ObtenerEncargado()
   {
-    $query = "SELECT * FROM adm_usuarios  WHERE encargado = 1 AND estado='activo' ORDER BY idusuario DESC LIMIT 1 ";
+    $query = "SELECT * FROM adm_usuarios  WHERE encargado = 1 ORDER BY idusuario DESC LIMIT 1 ";
 
     $consulta = $this->db->prepare($query);
     $consulta->execute();
@@ -3867,8 +3867,19 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
       return $this->modelo;
     }
   
-  
+  function ActualizarTokenReparto($ID_usuario, $tokenreparto){
+    $query = " UPDATE `adm_usuarios` SET`tokenreparto` =:tokenreparto WHERE idusuario = :ID_usuario ";
+    $result = $this->db->prepare($query);
+    $result->bindParam(':tokenreparto', $tokenreparto);
+    $result->bindParam(':ID_usuario', $ID_usuario);
 
+    $result->execute();
+
+    $num_rows_affected = $result->rowCount();
+
+
+    return $num_rows_affected > 0 ? true : false;
+  }
 
 
 

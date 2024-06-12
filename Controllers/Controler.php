@@ -1648,7 +1648,7 @@ class Peticiones
         if ($dato) {
             $resul = $dato;
         } else {
-            $resul = 'Ocupado';
+            $resul = 'Fallo';
         }
         echo json_encode($resul);
     }
@@ -2460,4 +2460,26 @@ class Peticiones
         }
         echo ($resul);
     }
+
+function ActualizarTokenReparto($ID_usuario, $tokenreparto){
+    
+    $model = new ModeloBD();
+
+
+    $dato = $model->ActualizarTokenReparto($ID_usuario, $tokenreparto);
+    if ($dato) {
+        $resul = 'exitoso';
+    } else {
+        $resul = 'fallo';
+    }
+    echo json_encode($resul);
+}
+
+
+
+
+
+
+
+
 }

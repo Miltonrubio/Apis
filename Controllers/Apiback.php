@@ -1205,31 +1205,41 @@ if (!empty($_POST['opcion'])) {
       break;
 
 
-case 153 :
+    case 153:
 
-  $id_gabeta = $_POST['id_gabeta'];
-  $control->mostrarPDFDeGaveta($id_gabeta);
-  break;
-
-
-
-case 154 :
-
-  $id_gabeta = $_POST['id_gabeta'];
-  $control->mostrarPDFDeInventarios($id_gabeta);
-  break;
+      $id_gabeta = $_POST['id_gabeta'];
+      $control->mostrarPDFDeGaveta($id_gabeta);
+      break;
 
 
 
-  
-case 155 :
+    case 154:
 
-  $ID_usuario = $_POST['ID_usuario'];
-  $control->ConsultarTokenCheckTaller($ID_usuario);
-  break;
+      $id_gabeta = $_POST['id_gabeta'];
+      $control->mostrarPDFDeInventarios($id_gabeta);
+      break;
 
 
-/*
+
+
+    case 155:
+
+      $ID_usuario = $_POST['ID_usuario'];
+      $control->ConsultarTokenCheckTaller($ID_usuario);
+      break;
+
+    case 156:
+
+      $ID_usuario = $_POST['ID_usuario'];
+      $tokenreparto = $_POST['tokenreparto'];
+      $control->ActualizarTokenReparto($ID_usuario, $tokenreparto);
+
+
+break;
+
+
+
+      /*
 
 function mostrarPDFDeInventarios(id_gabeta) {
   var url = '../Controlador/ReportesPDF/pdfInventariosPorGaveta.php?id_gabeta=' + id_gabeta;
@@ -1244,6 +1254,5 @@ function mostrarPDFDeGaveta(id_gabeta) {
 }
 
 */
-
   }
 }
