@@ -2409,6 +2409,7 @@ class Peticiones
 
 
 
+
     function mostrarPDFDeGaveta($id_gabeta)
     {
 
@@ -2435,5 +2436,28 @@ class Peticiones
             $resul = 'fallo';
         }
         echo json_encode($resul);
+    }
+
+
+
+
+
+
+    function ConsultarTokenCheckTaller($ID_usuario)
+    {
+
+        $model = new ModeloBD();
+        $dato = $model->ConsultarTokenCheckTaller($ID_usuario);
+
+        if ($dato) {
+
+            foreach ($dato as $usuario) {
+
+                $resul = $usuario["tokenreparto"];
+            }
+        } else {
+            $resul = 'fallo';
+        }
+        echo ($resul);
     }
 }

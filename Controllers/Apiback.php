@@ -1219,6 +1219,16 @@ case 154 :
   $control->mostrarPDFDeInventarios($id_gabeta);
   break;
 
+
+
+  
+case 155 :
+
+  $ID_usuario = $_POST['ID_usuario'];
+  $control->ConsultarTokenCheckTaller($ID_usuario);
+  break;
+
+
 /*
 
 function mostrarPDFDeInventarios(id_gabeta) {

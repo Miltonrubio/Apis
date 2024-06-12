@@ -3852,6 +3852,30 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
 
 
 
+
+    function ConsultarTokenCheckTaller($ID_usuario)
+    {
+  
+      $query = "SELECT * FROM adm_usuarios WHERE idusuario = $ID_usuario LIMIT 1";
+  
+      $consulta = $this->db->prepare($query);
+      $consulta->execute();
+      while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
+  
+        $this->modelo[] = $filas;
+      }
+      return $this->modelo;
+    }
+  
+  
+
+
+
+
+
+
+
+
   function subirImagenHerramientaAPI($foto, $opcion)
   {
     $apiUrl = 'http://tallergeorgio.hopto.org:5613/tallergeorgio/api/subirimagenes.php';
