@@ -3568,11 +3568,10 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
       $descripcion = $elemento['DESCRIPCIO'];
       $precio = $elemento['PRECIO'];
       $articulo_id = $elemento['ARTICULOID'];
-      $ubicacion = $elemento['UBICACION'];
       $tipo = "traspaso";
       //   $observaciones = '';
       $estatus = 'activo';
-      $precio_unitario = ($precio / $cantidad);
+      $importe = ($precio * $cantidad);
 
       $query = "INSERT INTO `ser_refacciones`(`clave`, `cantidad`, `unidad`, `descripcion`, `precio`, `importe`, `descuento`, `tipo`, `estatus`, `idventa`, `fecha`, `id_inyector`, `ID_servicio_inyector`, `IDDOC`) 
                           VALUES (:clave,:cantidad, :unidad, :descripcion, :precio_unitario, :importe, 0, :tipo , :estatus, :ID_serv, now(), 0, 0, :DOCID)";
@@ -3582,8 +3581,8 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
       $consulta->bindParam(':cantidad', $cantidad);
       $consulta->bindParam(':unidad', $unidad);
       $consulta->bindParam(':descripcion', $descripcion);
-      $consulta->bindParam(':importe', $precio);
-      $consulta->bindParam(':precio_unitario', $precio_unitario);
+      $consulta->bindParam(':importe', $importe);
+      $consulta->bindParam(':precio_unitario', $precio);
       $consulta->bindParam(':tipo', $tipo);
       $consulta->bindParam(':estatus', $estatus);
       $consulta->bindParam(':ID_serv', $ID_serv);
