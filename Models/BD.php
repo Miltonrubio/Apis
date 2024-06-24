@@ -3881,6 +3881,43 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
   }
 
 
+  function InsertarMarca($marca) {
+    $query = "INSERT INTO car_marca (`name`, `date_update`, `date_create`, `id_car_type`) VALUES (:name, 1, 1, 1)";
+    $result = $this->db->prepare($query);
+    $result->bindParam(':name', $marca);
+
+    try {
+        $result->execute();
+        return true;
+    } catch (PDOException $e) {
+        if ($e->getCode() == 23000) {
+            return "duplicate";
+        } else {
+            throw $e;
+        }
+    }
+}
+
+
+
+  function InsertarModelo($idMarca, $modelo){
+    
+    $query = "INSERT INTO `car_modelo`( `id_car_make`, `name`, `date_create`, `date_update`, `id_car_type`) VALUES (:idMarca, :name,1,1,1)";
+    $result = $this->db->prepare($query);
+    $result->bindParam(':idMarca', $idMarca);
+    $result->bindParam(':name', $modelo);
+
+    try {
+        $result->execute();
+        return true;
+    } catch (PDOException $e) {
+        if ($e->getCode() == 23000) {
+            return "duplicate";
+        } else {
+            throw $e;
+        }
+    }
+  }
 
 
 

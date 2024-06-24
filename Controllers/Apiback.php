@@ -1233,11 +1233,24 @@ if (!empty($_POST['opcion'])) {
       $ID_usuario = $_POST['ID_usuario'];
       $tokenreparto = $_POST['tokenreparto'];
       $control->ActualizarTokenReparto($ID_usuario, $tokenreparto);
+      break;
 
 
-break;
+      case 157:
+
+      $marca = $_POST['marca'];
+      $control->InsertarMarca($marca);
+
+      break;
 
 
+    case 158:
+
+
+      $idMarca = $_POST['idMarca'];
+      $modelo = $_POST['modelo'];
+      $control->InsertarModelo($idMarca, $modelo);
+      break;
 
       /*
 

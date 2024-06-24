@@ -2461,25 +2461,51 @@ class Peticiones
         echo ($resul);
     }
 
-function ActualizarTokenReparto($ID_usuario, $tokenreparto){
-    
-    $model = new ModeloBD();
+    function ActualizarTokenReparto($ID_usuario, $tokenreparto)
+    {
+
+        $model = new ModeloBD();
 
 
-    $dato = $model->ActualizarTokenReparto($ID_usuario, $tokenreparto);
-    if ($dato) {
-        $resul = 'exitoso';
-    } else {
-        $resul = 'fallo';
+        $dato = $model->ActualizarTokenReparto($ID_usuario, $tokenreparto);
+        if ($dato) {
+            $resul = 'exitoso';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
     }
-    echo json_encode($resul);
-}
+
+    function InsertarMarca($marca)
+    {
+        $model = new ModeloBD();
+        $dato = $model->InsertarMarca($marca);
+
+        if ($dato === true) {
+            $resul = 'exitoso';
+        } elseif ($dato === "duplicate") {
+            $resul = 'No puedes duplicar datos';
+        } else {
+            $resul = 'fallo';
+        }
+
+        echo json_encode($resul);
+    }
 
 
+    function InsertarModelo($idMarca, $modelo)
+    {
 
-
-
-
-
-
+        $model = new ModeloBD();
+        $dato = $model->InsertarModelo($idMarca, $modelo);
+      
+        if ($dato === true) {
+            $resul = 'exitoso';
+        } elseif ($dato === "duplicate") {
+            $resul = 'No puedes duplicar datos';
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
 }

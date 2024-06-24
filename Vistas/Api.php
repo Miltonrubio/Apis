@@ -4591,6 +4591,66 @@
 
 
 
+
+
+
+
+    
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Agregar Nueva Marca </label></div>
+        <input type="hidden" name="opcion" value="157">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="157"<br /> 
+          name="marca" value="NuevaMarca"<br />
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="marca" value="NuevaMarca">
+          <label for="floatingInput">marca</label>
+        </div>
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+    
+
+    
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Agregar Nuevo Modelo </label></div>
+        <input type="hidden" name="opcion" value="158">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="158"<br /> 
+          name="idMarca" value="idMarca"<br />
+          name="modelo" value="modelo"<br />
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="idMarca" value="4212">
+          <label for="floatingInput">idMarca</label>
+        </div>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="modelo" value="nuevo Modelo">
+          <label for="floatingInput">modelo</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+
+
+
     <script src="../librerias/Bootstrap5/js/bootstrap.min.js"></script>
 </body>
 
