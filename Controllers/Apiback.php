@@ -1236,7 +1236,7 @@ if (!empty($_POST['opcion'])) {
       break;
 
 
-      case 157:
+    case 157:
 
       $marca = $_POST['marca'];
       $control->InsertarMarca($marca);
@@ -1252,7 +1252,32 @@ if (!empty($_POST['opcion'])) {
       $control->InsertarModelo($idMarca, $modelo);
       break;
 
+
+    case 159:
+
+      $control->ConsultarUnidadesDelTaller();
+      break;
+
+    case 160:
+      $control->ConsultarRepartidores();
+      break;
+
+    case 161:
+
+      $ID_chofer = $_POST['ID_chofer'];
+      $ID_unidadPrestamo = $_POST['ID_unidadPrestamo'];
+      $control->IniciarPrestamo($ID_chofer, $ID_unidadPrestamo);
+      break;
+
+    case 162:
+
+      $ID_unidadPrestamo = $_POST['ID_unidadPrestamo'];
+      $control->informacionPrestamo($ID_unidadPrestamo);
+      break;
+
       /*
+
+      
 
 function mostrarPDFDeInventarios(id_gabeta) {
   var url = '../Controlador/ReportesPDF/pdfInventariosPorGaveta.php?id_gabeta=' + id_gabeta;

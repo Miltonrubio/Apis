@@ -4647,7 +4647,91 @@
     </div>
 
 
+    <!-- Modulo de prestamos -->
 
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Consultar Unidades de Georgio </label></div>
+        <input type="hidden" name="opcion" value="159">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="159"<br /> 
+        </code><br>
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Consultar repartidores</label></div>
+        <input type="hidden" name="opcion" value="160">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="160"<br /> 
+        </code><br>
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Registrar Prestamo</label></div>
+        <input type="hidden" name="opcion" value="161">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="161"<br /> 
+          name="ID_chofer" value="5"<br /> 
+          name="ID_unidadPrestamo" value="5"<br /> 
+        </code><br>
+
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_chofer" value="5">
+          <label for="floatingInput">ID_chofer</label>
+        </div>
+
+
+        
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_unidadPrestamo" value="5">
+          <label for="floatingInput">ID_unidadPrestamo</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
+
+
+
+    
+    <div class="section">
+      <form class="form" enctype="multipart/form-data" action="../Controllers/Apiback.php" method="POST">
+        <div><label>Informacion del prestamo</label></div>
+        <input type="hidden" name="opcion" value="162">
+        <code>
+          <br />
+          method = "POST"<br />
+          name="opcion" value="162"<br /> 
+          name="ID_unidadPrestamo" value="5"<br /> 
+        </code><br>
+
+        
+        <div class="form-floating contenedor-inputs padre"><br>
+          <input type="text" name="ID_unidadPrestamo" value="5">
+          <label for="floatingInput">ID_unidadPrestamo</label>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">consultar</button>
+      </form>
+    </div>
 
 
 

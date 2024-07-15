@@ -2498,13 +2498,91 @@ class Peticiones
 
         $model = new ModeloBD();
         $dato = $model->InsertarModelo($idMarca, $modelo);
-      
+
         if ($dato === true) {
             $resul = 'exitoso';
         } elseif ($dato === "duplicate") {
             $resul = 'No puedes duplicar datos';
         } else {
             $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+    function ConsultarUnidadesDelTaller()
+    {
+
+        $model = new ModeloBD();
+
+        $dato = $model->ConsultarUnidadesDelTaller();
+        if ($dato) {
+            $resul = $dato;
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+    function ConsultarRepartidores()
+    {
+
+        $model = new ModeloBD();
+
+        $dato = $model->ConsultarRepartidores();
+        if ($dato) {
+            $resul = $dato;
+        } else {
+            $resul = 'fallo';
+        }
+        echo json_encode($resul);
+    }
+
+
+
+    function IniciarPrestamo($ID_chofer, $ID_unidadPrestamo)
+    {
+
+        $model = new ModeloBD();
+
+        $resulValidacion =   $model->validarUnidadLibre($ID_unidadPrestamo);
+
+        if ($resulValidacion == "libre") {
+            $dato = $model->IniciarPrestamo($ID_chofer, $ID_unidadPrestamo);
+            if ($dato) {
+                $datoUnidad = $model->marcarComoOcupado($ID_unidadPrestamo);
+
+                if ($datoUnidad) {
+                    $resul = 'exito';
+                } else {
+                    $resul = 'fallo';
+                }
+            } else {
+                $resul = 'fallo';
+            }
+        } else {
+            $resul = $resulValidacion;
+        }
+
+        echo json_encode($resul);
+    }
+
+
+
+    function informacionPrestamo($ID_unidadPrestamo)
+    {
+
+        $model = new ModeloBD();
+
+        $resul = $model->informacionPrestamo($ID_unidadPrestamo);
+
+        if ($resul) {
+
+            $resul = $resul;
+        } else {
+
+            $resul = $resul;
         }
         echo json_encode($resul);
     }

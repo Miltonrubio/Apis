@@ -23,7 +23,7 @@ class ModeloBD
       $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } else {
 
-      $this->db = new PDO('mysql:host=192.168.16.252;dbname=georgio2024', 'admintaller', 'Taller2023');
+      $this->db = new PDO('mysql:host=localhost;dbname=georgio2024', 'root', '');
       $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       //   }
       // $this->db = new PDO('mysql:host=localhost;dbname=georgio2023', 'admintaller', 'Taller2023');    
@@ -33,7 +33,9 @@ class ModeloBD
   }
   function Consultarusurio($telefono, $pass)
   {
-    $query = "SELECT U.idusuario,U.nombre,U.email,U.telefono,U.password,U.permisos,U.estado,U.tipo,U.foto, U.token, U.tokenreparto, U.area, U.empresa  FROM adm_usuarios as U left join adm_fotouser as F on U.idusuario=F.idusuario WHERE U.telefono  = ? AND U.password = ? AND U.estado= 'activo' ";
+    $query = "SELECT U.idusuario,U.nombre,U.email,U.telefono,U.password,U.permisos,U.estado,U.tipo,U.foto, U.token, U.tokenreparto, U.area, U.empresa  
+    FROM adm_usuarios as U
+    WHERE U.telefono  = ? AND U.password = ? AND U.estado= 'activo' ";
     $result = $this->db->prepare($query);
     $result->bindParam(1, $telefono);
     $result->bindParam(2, $pass);
@@ -138,7 +140,7 @@ class ModeloBD
   }
   function ConsultarUsuario()
   {
-    $query = "SELECT U.idusuario,U.nombre,U.email,U.telefono,U.password,U.permisos,U.estado,U.tipo,F.foto, U.token, U.tokenreparto, U.area, U.empresa FROM adm_usuarios as U left join adm_fotouser as F on U.idusuario=F.idusuario WHERE  U.estado= 'activo' ";
+    $query = "SELECT U.idusuario,U.nombre,U.email,U.telefono,U.password,U.permisos,U.estado,U.tipo,F.foto, U.token, U.tokenreparto, U.area, U.empresa FROM adm_usuarios as U WHERE  U.estado= 'activo' ";
     $consulta = $this->db->prepare($query);
     $consulta->execute();
     while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
@@ -866,23 +868,23 @@ ORDER BY G.id_gabeta DESC";
   function MostrarHerramientasPorGabeta($id_gabeta)
   {
 
-      $query = "SELECT * FROM `inv_herramienta` 
+    $query = "SELECT * FROM `inv_herramienta` 
       LEFT JOIN  inv_cajones ON inv_cajones.id_cajon = inv_herramienta.id_cajon
       WHERE inv_cajones.id_gabeta = :id_gabeta AND inv_herramienta.inventario != 'Eliminado'";
 
-      $result = $this->db->prepare($query);
-      $result->bindParam(':id_gabeta', $id_gabeta);
-      $result->execute();
-      while ($filas = $result->fetch(PDO::FETCH_ASSOC)) {
-          $this->modelo[] = $filas;
-      }
-      return $this->modelo;
+    $result = $this->db->prepare($query);
+    $result->bindParam(':id_gabeta', $id_gabeta);
+    $result->execute();
+    while ($filas = $result->fetch(PDO::FETCH_ASSOC)) {
+      $this->modelo[] = $filas;
+    }
+    return $this->modelo;
   }
 
 
 
 
-  
+
 
 
   function AgregarHerramienta($nombreHerramienta, $descripHerramienta, $cantidadHerramientas, $id_cajon)
@@ -1107,90 +1109,90 @@ ORDER BY G.id_gabeta DESC";
 
   function LevantarInventario($idgabeta, $idencargado, $mecanico)
   {
-      try {
-          $this->db->beginTransaction();
-          $queryInsertDocGabetas = "INSERT INTO inv_doc_gabetas (fecha, hora, idgabeta, idusuario, idencargado, estado) VALUES ( CURDATE(), CURTIME(), '$idgabeta', '$mecanico', '$idencargado', 'pendiente')";
-  
-          $resulDocGabeta = $this->db->prepare($queryInsertDocGabetas);
-  
-          if ($resulDocGabeta->execute()) {
-  
-              $iddocga = $this->db->lastInsertId();
-  
-              $queryRecorrerCajones = "SELECT * FROM inv_cajones WHERE id_gabeta = :idgabeta";
-  
-              $resulGavetas = $this->db->prepare($queryRecorrerCajones);
-              $resulGavetas->bindParam(':idgabeta', $idgabeta, PDO::PARAM_INT);
-              $resulGavetas->execute();
-  
-              if ($resulGavetas->rowCount() > 0) {
-  
-                  $herramientasEncontradas = false; // Variable para verificar si se encontraron herramientas
-  
-                  while ($row = $resulGavetas->fetch(PDO::FETCH_ASSOC)) {
-  
-                      $idcajon_actual = $row["id_cajon"];
-                      $queryHerramienta = "SELECT * FROM inv_herramienta WHERE id_cajon = :idcajon_actual AND inventario = 'alta' ";
-                      $resultHerramienta = $this->db->prepare($queryHerramienta);
-                      $resultHerramienta->bindParam(':idcajon_actual', $idcajon_actual, PDO::PARAM_INT);
-                      $resultHerramienta->execute();
-  
-                      if ($resultHerramienta->rowCount() > 0) {
-                          $herramientasEncontradas = true; // Se encontraron herramientas
-  
-                          while ($rowHerramienta = $resultHerramienta->fetch(PDO::FETCH_ASSOC)) {
-  
-                              $idHerramienta = $rowHerramienta["idHerramienta"];
-                              $foto = $rowHerramienta["foto"];
-                              $nombre = $rowHerramienta["nombre"];
-                              $descripcion = $rowHerramienta["descripcion"];
-                              $costo = $rowHerramienta["costo"];
-                              $piezas = $rowHerramienta["piezas"];
-                              //  $estado = $rowHerramienta["estado"];
-                              $estado = "pendiente";
-                              $anomalia = $rowHerramienta["anomalia"];
-                              $inventario = $rowHerramienta["inventario"];
-                              $estatus_cobro = $rowHerramienta["estatus_cobro"];
-                              $id_cajon_herramienta = $rowHerramienta["id_cajon"];
-  
-                              $queryInsertInventario = "INSERT INTO inv_herramienta_inventario (iddoc, idgabeta, idcajon, idherramienta, herramienta, idmecanico, idencargado, cantidad, estado, fecha, foto, estatus) VALUES (:iddocga, :idgabeta, :id_cajon_herramienta, :idHerramienta, :nombre, :idMecanico, :idencargado, :piezas, :estado, CURDATE(), :foto, 'activo')";
-                              $resultInsertInventario = $this->db->prepare($queryInsertInventario);
-                              $resultInsertInventario->bindParam(':iddocga', $iddocga);
-                              $resultInsertInventario->bindParam(':idgabeta', $idgabeta);
-                              $resultInsertInventario->bindParam(':id_cajon_herramienta', $id_cajon_herramienta);
-                              $resultInsertInventario->bindParam(':idHerramienta', $idHerramienta);
-                              $resultInsertInventario->bindParam(':nombre', $nombre);
-                              $resultInsertInventario->bindParam(':idencargado', $idencargado);
-                              $resultInsertInventario->bindParam(':idMecanico', $mecanico);
-                              $resultInsertInventario->bindParam(':piezas', $piezas);
-                              $resultInsertInventario->bindParam(':estado', $estado);
-                              $resultInsertInventario->bindParam(':foto', $foto);
-  
-                              $resultInsertInventario->execute();
-                          }
-                      }
-                  }
-  
-                  if (!$herramientasEncontradas) {
-                      return "No se encontraron herramientas";
-                  }
+    try {
+      $this->db->beginTransaction();
+      $queryInsertDocGabetas = "INSERT INTO inv_doc_gabetas (fecha, hora, idgabeta, idusuario, idencargado, estado) VALUES ( CURDATE(), CURTIME(), '$idgabeta', '$mecanico', '$idencargado', 'pendiente')";
+
+      $resulDocGabeta = $this->db->prepare($queryInsertDocGabetas);
+
+      if ($resulDocGabeta->execute()) {
+
+        $iddocga = $this->db->lastInsertId();
+
+        $queryRecorrerCajones = "SELECT * FROM inv_cajones WHERE id_gabeta = :idgabeta";
+
+        $resulGavetas = $this->db->prepare($queryRecorrerCajones);
+        $resulGavetas->bindParam(':idgabeta', $idgabeta, PDO::PARAM_INT);
+        $resulGavetas->execute();
+
+        if ($resulGavetas->rowCount() > 0) {
+
+          $herramientasEncontradas = false; // Variable para verificar si se encontraron herramientas
+
+          while ($row = $resulGavetas->fetch(PDO::FETCH_ASSOC)) {
+
+            $idcajon_actual = $row["id_cajon"];
+            $queryHerramienta = "SELECT * FROM inv_herramienta WHERE id_cajon = :idcajon_actual AND inventario = 'alta' ";
+            $resultHerramienta = $this->db->prepare($queryHerramienta);
+            $resultHerramienta->bindParam(':idcajon_actual', $idcajon_actual, PDO::PARAM_INT);
+            $resultHerramienta->execute();
+
+            if ($resultHerramienta->rowCount() > 0) {
+              $herramientasEncontradas = true; // Se encontraron herramientas
+
+              while ($rowHerramienta = $resultHerramienta->fetch(PDO::FETCH_ASSOC)) {
+
+                $idHerramienta = $rowHerramienta["idHerramienta"];
+                $foto = $rowHerramienta["foto"];
+                $nombre = $rowHerramienta["nombre"];
+                $descripcion = $rowHerramienta["descripcion"];
+                $costo = $rowHerramienta["costo"];
+                $piezas = $rowHerramienta["piezas"];
+                //  $estado = $rowHerramienta["estado"];
+                $estado = "pendiente";
+                $anomalia = $rowHerramienta["anomalia"];
+                $inventario = $rowHerramienta["inventario"];
+                $estatus_cobro = $rowHerramienta["estatus_cobro"];
+                $id_cajon_herramienta = $rowHerramienta["id_cajon"];
+
+                $queryInsertInventario = "INSERT INTO inv_herramienta_inventario (iddoc, idgabeta, idcajon, idherramienta, herramienta, idmecanico, idencargado, cantidad, estado, fecha, foto, estatus) VALUES (:iddocga, :idgabeta, :id_cajon_herramienta, :idHerramienta, :nombre, :idMecanico, :idencargado, :piezas, :estado, CURDATE(), :foto, 'activo')";
+                $resultInsertInventario = $this->db->prepare($queryInsertInventario);
+                $resultInsertInventario->bindParam(':iddocga', $iddocga);
+                $resultInsertInventario->bindParam(':idgabeta', $idgabeta);
+                $resultInsertInventario->bindParam(':id_cajon_herramienta', $id_cajon_herramienta);
+                $resultInsertInventario->bindParam(':idHerramienta', $idHerramienta);
+                $resultInsertInventario->bindParam(':nombre', $nombre);
+                $resultInsertInventario->bindParam(':idencargado', $idencargado);
+                $resultInsertInventario->bindParam(':idMecanico', $mecanico);
+                $resultInsertInventario->bindParam(':piezas', $piezas);
+                $resultInsertInventario->bindParam(':estado', $estado);
+                $resultInsertInventario->bindParam(':foto', $foto);
+
+                $resultInsertInventario->execute();
               }
+            }
           }
-  
-          $this->db->commit();
-  
-          return "success";
-      } catch (\Throwable $th) {
-  
-          $this->db->rollBack();
-          return "error";
+
+          if (!$herramientasEncontradas) {
+            return "No se encontraron herramientas";
+          }
+        }
       }
+
+      $this->db->commit();
+
+      return "success";
+    } catch (\Throwable $th) {
+
+      $this->db->rollBack();
+      return "error";
+    }
   }
-  
 
 
 
-/*
+
+  /*
   function LevantarInventario($idgabeta, $idencargado, $mecanico)
   {
 
@@ -2571,7 +2573,7 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
   function ActualizarEstadoUnidad($ID_ser_venta, $nuevoEstado)
   {
 
-    if ($nuevoEstado == "ENTREGADO" || $nuevoEstado == "Entregado" ) {
+    if ($nuevoEstado == "ENTREGADO" || $nuevoEstado == "Entregado") {
 
       $query = "UPDATE `ser_ventas` SET `estatus`='$nuevoEstado', `fecha_salida` =NOW(), `hora_salida`=CURDATE() WHERE id_ser_venta= $ID_ser_venta";
     } else {
@@ -3356,7 +3358,8 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
   }
 
 
-  function AsinarTraspasoInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA){
+  function AsinarTraspasoInyector($ID_inyector, $DOCID, $NOMBRE, $EMISOR, $NUMERO, $ESTADO, $FECHA, $FECCAN, $TOTAL, $NOTA)
+  {
 
     $query = "INSERT INTO traspasos (NOMBRE, DOCID, ID_inyector, NUMERO, ESTADO,EMISOR, FECHA, FECCAN, TOTAL, NOTA) 
                           VALUES ('$NOMBRE',$DOCID,$ID_inyector, '$NUMERO', '$ESTADO','$EMISOR', '$FECHA', '$FECCAN', '$TOTAL', '$NOTA')";
@@ -3371,47 +3374,50 @@ AND nombres_checks.tipo_check LIKE '$tipo_check'";
     }
   }
 
-  function validarQueNoSeaMismoTraspaso($DOCID, $ID_inyector){
+  function validarQueNoSeaMismoTraspaso($DOCID, $ID_inyector)
+  {
     $query = "SELECT COUNT(*) as count FROM traspasos  WHERE DOCID = :docid AND ID_inyector = :inyector AND STATUS_TRASPASO = 1";
 
     $consulta = $this->db->prepare($query);
     $consulta->bindParam(':docid', $DOCID);
     $consulta->bindParam(':inyector', $ID_inyector);
     $consulta->execute();
-    
+
     $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
 
     // Si count es mayor a 0, significa que se encontraron resultados
     return $resultado['count'] > 0 ? true : false;
-}
+  }
 
 
-function validarQueNoSeaMismoTraspasoServicio($DOCID, $ID_serv){
-  $query = "SELECT COUNT(*) as count FROM traspasos  WHERE DOCID = :docid AND ID_servicio = :ID_serv AND STATUS_TRASPASO = 1";
+  function validarQueNoSeaMismoTraspasoServicio($DOCID, $ID_serv)
+  {
+    $query = "SELECT COUNT(*) as count FROM traspasos  WHERE DOCID = :docid AND ID_servicio = :ID_serv AND STATUS_TRASPASO = 1";
 
-  $consulta = $this->db->prepare($query);
-  $consulta->bindParam(':docid', $DOCID);
-  $consulta->bindParam(':ID_serv', $ID_serv);
-  $consulta->execute();
-  
-  $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+    $consulta = $this->db->prepare($query);
+    $consulta->bindParam(':docid', $DOCID);
+    $consulta->bindParam(':ID_serv', $ID_serv);
+    $consulta->execute();
 
-  // Si count es mayor a 0, significa que se encontraron resultados
-  return $resultado['count'] > 0 ? true : false;
-}
+    $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+
+    // Si count es mayor a 0, significa que se encontraron resultados
+    return $resultado['count'] > 0 ? true : false;
+  }
 
 
-function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector){
-  $query = "SELECT COUNT(*) as count FROM traspasos  WHERE DOCID = :docid AND ID_serv_inyector = :ID_serv_inyector AND STATUS_TRASPASO = 1";
+  function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
+  {
+    $query = "SELECT COUNT(*) as count FROM traspasos  WHERE DOCID = :docid AND ID_serv_inyector = :ID_serv_inyector AND STATUS_TRASPASO = 1";
 
-  $consulta = $this->db->prepare($query);
-  $consulta->bindParam(':docid', $DOCID);
-  $consulta->bindParam(':ID_serv_inyector', $ID_serv_inyector);
-  $consulta->execute();
-  
-  $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
-  return $resultado['count'] > 0 ? true : false;
-}
+    $consulta = $this->db->prepare($query);
+    $consulta->bindParam(':docid', $DOCID);
+    $consulta->bindParam(':ID_serv_inyector', $ID_serv_inyector);
+    $consulta->execute();
+
+    $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+    return $resultado['count'] > 0 ? true : false;
+  }
 
 
 
@@ -3712,8 +3718,8 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
 
 
   function GenerarPDFRecepcionInyector($idventa)
-   {
-  //   header("Location:  http://tallergeorgio.hopto.org:5611/georgiotemp/web/Controlador/ReportesPDF/PDFReporteCheckTecnico.php?idventa=$idventa&idcliente=$idcliente");
+  {
+    //   header("Location:  http://tallergeorgio.hopto.org:5611/georgiotemp/web/Controlador/ReportesPDF/PDFReporteCheckTecnico.php?idventa=$idventa&idcliente=$idcliente");
     header("Location:   http://tallergeorgio.hopto.org:5611/georgioapp/georgio/web/Controlador/ReportesPDF/PDFRecepcionInyector.php?idserv=$idventa");
     exit();
   }
@@ -3732,7 +3738,7 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
     header("Location:   http://tallergeorgio.hopto.org:5611/georgioapp/georgio/web/Controlador/ReportesPDF/PDFRefaccionesInyector.php?idserv=$idventa");
     exit();
   }
-  
+
 
 
   function GenerarPDFManoDeObraDeInyector($idventa)
@@ -3741,7 +3747,7 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
     header("Location:  http://tallergeorgio.hopto.org:5611/georgioapp/georgio/web/Controlador/ReportesPDF/PDFMecanicosInyector.php?idserv=$idventa");
     exit();
   }
-  
+
 
 
 
@@ -3763,17 +3769,16 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
 
   function asignarAlarmaAGaveta($id_gabeta, $frecuencia)
   {
-      $query = "UPDATE `inv_gabeta` SET `frecuencia_dias`=:frecuencia WHERE id_gabeta = :id_gabeta";
-      $result = $this->db->prepare($query);
-      $result->bindParam(':id_gabeta', $id_gabeta);
-      $result->bindParam(':frecuencia', $frecuencia);
-      
-      if ($result->execute()) {
-        return true;
-      } else {
-        return false;
-      }
+    $query = "UPDATE `inv_gabeta` SET `frecuencia_dias`=:frecuencia WHERE id_gabeta = :id_gabeta";
+    $result = $this->db->prepare($query);
+    $result->bindParam(':id_gabeta', $id_gabeta);
+    $result->bindParam(':frecuencia', $frecuencia);
 
+    if ($result->execute()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 
@@ -3782,31 +3787,31 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
 
   function FinalizarRevisionInventario($iddocga)
   {
-      $estado = "Revisado";
-      $query = "UPDATE inv_doc_gabetas SET estado = :estado WHERE iddocga = :iddocga";
-      $result = $this->db->prepare($query);
-      $result->bindParam(':iddocga', $iddocga);
-      $result->bindParam(':estado', $estado);
-      $result->execute();
+    $estado = "Revisado";
+    $query = "UPDATE inv_doc_gabetas SET estado = :estado WHERE iddocga = :iddocga";
+    $result = $this->db->prepare($query);
+    $result->bindParam(':iddocga', $iddocga);
+    $result->bindParam(':estado', $estado);
+    $result->execute();
 
-      $num_rows_affected = $result->rowCount();
+    $num_rows_affected = $result->rowCount();
 
-      return $num_rows_affected > 0 ? true : false;
+    return $num_rows_affected > 0 ? true : false;
   }
 
 
 
   function ActualizarFechaRev($id_gabeta)
   {
-      $query = "UPDATE inv_gabeta SET fecha_ultimo_inv = NOW() WHERE id_gabeta = $id_gabeta";
+    $query = "UPDATE inv_gabeta SET fecha_ultimo_inv = NOW() WHERE id_gabeta = $id_gabeta";
 
-      $result = $this->db->prepare($query);
+    $result = $this->db->prepare($query);
 
-      if ($result->execute()) {
-          return true;
-      } else {
-          return false;
-      }
+    if ($result->execute()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 
@@ -3816,57 +3821,58 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
   function EditarGaveta($EditnombreGaveta, $EditdescripcionGaveta, $idgabeta)
   {
 
-      $query = "UPDATE inv_gabeta SET nombre=:EditnombreGaveta, descripcion = :EditdescripcionGaveta WHERE id_gabeta = :idgabeta ";
-      $result = $this->db->prepare($query);
-      $result->bindParam(':EditnombreGaveta', $EditnombreGaveta);
-      $result->bindParam(':EditdescripcionGaveta', $EditdescripcionGaveta);
-      $result->bindParam(':idgabeta', $idgabeta);
+    $query = "UPDATE inv_gabeta SET nombre=:EditnombreGaveta, descripcion = :EditdescripcionGaveta WHERE id_gabeta = :idgabeta ";
+    $result = $this->db->prepare($query);
+    $result->bindParam(':EditnombreGaveta', $EditnombreGaveta);
+    $result->bindParam(':EditdescripcionGaveta', $EditdescripcionGaveta);
+    $result->bindParam(':idgabeta', $idgabeta);
 
-      $result->execute();
-      if ($result) {
-          return true;
-      } else {
-          return false;
-      }
+    $result->execute();
+    if ($result) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 
 
 
 
-  function mostrarPDFDeGaveta($id_gabeta) 
-    {
-      header("Location: http://192.168.16.153:8888/taller/web/Controlador/ReportesPDF/pdfContenidoGaveta.php?id_gabeta=$id_gabeta");
-      exit();
+  function mostrarPDFDeGaveta($id_gabeta)
+  {
+    header("Location: http://192.168.16.153:8888/taller/web/Controlador/ReportesPDF/pdfContenidoGaveta.php?id_gabeta=$id_gabeta");
+    exit();
+  }
+
+
+  function mostrarPDFDeInventarios($id_gabeta)
+  {
+    header("Location: http://192.168.16.153:8888/taller/web/Controlador/ReportesPDF/pdfInventariosPorGaveta.php?id_gabeta=$id_gabeta");
+    exit();
+  }
+
+
+
+
+
+
+  function ConsultarTokenCheckTaller($ID_usuario)
+  {
+
+    $query = "SELECT * FROM adm_usuarios WHERE idusuario = $ID_usuario LIMIT 1";
+
+    $consulta = $this->db->prepare($query);
+    $consulta->execute();
+    while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
+
+      $this->modelo[] = $filas;
     }
-  
+    return $this->modelo;
+  }
 
-    function mostrarPDFDeInventarios($id_gabeta) 
-    {
-      header("Location: http://192.168.16.153:8888/taller/web/Controlador/ReportesPDF/pdfInventariosPorGaveta.php?id_gabeta=$id_gabeta");
-      exit();
-    }
-  
-  
-
-
-
-
-    function ConsultarTokenCheckTaller($ID_usuario)
-    {
-  
-      $query = "SELECT * FROM adm_usuarios WHERE idusuario = $ID_usuario LIMIT 1";
-  
-      $consulta = $this->db->prepare($query);
-      $consulta->execute();
-      while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
-  
-        $this->modelo[] = $filas;
-      }
-      return $this->modelo;
-    }
-  
-  function ActualizarTokenReparto($ID_usuario, $tokenreparto){
+  function ActualizarTokenReparto($ID_usuario, $tokenreparto)
+  {
     $query = " UPDATE `adm_usuarios` SET`tokenreparto` =:tokenreparto WHERE idusuario = :ID_usuario ";
     $result = $this->db->prepare($query);
     $result->bindParam(':tokenreparto', $tokenreparto);
@@ -3881,43 +3887,149 @@ function validarQueNoSeaMismoTraspasoServicioInyector($DOCID, $ID_serv_inyector)
   }
 
 
-  function InsertarMarca($marca) {
+  function InsertarMarca($marca)
+  {
     $query = "INSERT INTO car_marca (`name`, `date_update`, `date_create`, `id_car_type`) VALUES (:name, 1, 1, 1)";
     $result = $this->db->prepare($query);
     $result->bindParam(':name', $marca);
 
     try {
-        $result->execute();
-        return true;
+      $result->execute();
+      return true;
     } catch (PDOException $e) {
-        if ($e->getCode() == 23000) {
-            return "duplicate";
-        } else {
-            throw $e;
-        }
+      if ($e->getCode() == 23000) {
+        return "duplicate";
+      } else {
+        throw $e;
+      }
     }
-}
+  }
 
 
 
-  function InsertarModelo($idMarca, $modelo){
-    
+  function InsertarModelo($idMarca, $modelo)
+  {
+
     $query = "INSERT INTO `car_modelo`( `id_car_make`, `name`, `date_create`, `date_update`, `id_car_type`) VALUES (:idMarca, :name,1,1,1)";
     $result = $this->db->prepare($query);
     $result->bindParam(':idMarca', $idMarca);
     $result->bindParam(':name', $modelo);
 
     try {
-        $result->execute();
-        return true;
+      $result->execute();
+      return true;
     } catch (PDOException $e) {
-        if ($e->getCode() == 23000) {
-            return "duplicate";
-        } else {
-            throw $e;
-        }
+      if ($e->getCode() == 23000) {
+        return "duplicate";
+      } else {
+        throw $e;
+      }
     }
   }
+
+
+
+
+
+
+  function ConsultarUnidadesDelTaller()
+  {
+
+    $query = "SELECT unidades_georgio.*, car_modelo.name AS modelo , car_marca.name AS marca FROM `unidades_georgio` 
+    JOIN car_marca ON  car_marca.id_car_make = unidades_georgio.ID_marca
+    JOIN car_modelo ON  car_modelo.id_car_model = unidades_georgio.ID_modelo
+    WHERE estatus_unidad != 0";
+
+    $consulta = $this->db->prepare($query);
+    $consulta->execute();
+    while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
+      $this->modelo[] = $filas;
+    }
+    return $this->modelo;
+  }
+
+
+
+
+  function ConsultarRepartidores()
+  {
+
+    $query = "SELECT * FROM  adm_usuarios WHERE (tipo like 'REPARTIDOR') OR (area like 'REPARTIDOR')";
+
+    $consulta = $this->db->prepare($query);
+    $consulta->execute();
+    while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
+      $this->modelo[] = $filas;
+    }
+    return $this->modelo;
+  }
+
+
+  function IniciarPrestamo($ID_chofer, $ID_unidadPrestamo /* $fotoConductor, $fotoTablero, $fotoUnidad, $cartaCompromiso */)
+  {
+
+    $insertQuery = "INSERT INTO ser_prestamos (idunidad, idchofer, fecha_entrega, hora_entrega, estatus) 
+  VALUES ($ID_unidadPrestamo, $ID_chofer, CURDATE(), NOW(), 'activo')";
+
+    $result = $this->db->prepare($insertQuery);
+    $result->execute();
+
+    $num_rows_affected = $result->rowCount();
+
+
+    return $num_rows_affected > 0 ? true : false;
+  }
+
+
+  function marcarComoOcupado($ID_unidad)
+  {
+    $updateQuery = "UPDATE unidades_georgio SET estatus_prestamo = 'ocupado' WHERE ID_unidad = $ID_unidad";
+
+    $result = $this->db->prepare($updateQuery);
+    $result->execute();
+
+    $num_rows_affected = $result->rowCount();
+
+
+    return $num_rows_affected > 0 ? true : false;
+  }
+
+
+
+  function validarUnidadLibre($ID_unidad)
+  {
+    $query = "SELECT * FROM  unidades_georgio WHERE ID_unidad = $ID_unidad AND estatus_prestamo = 'libre'";
+    $result = $this->db->prepare($query);
+    $result->execute();
+
+    if ($result->rowCount() > 0) {
+
+      return "libre";
+    } else {
+      return "ocupado";
+    }
+  }
+
+
+function informacionPrestamo($idunidad){
+
+  
+  $query = "SELECT ser_prestamos.*, unidades_georgio.*,  adm_usuarios.nombre AS chofer FROM  ser_prestamos 
+  INNER JOIN unidades_georgio ON unidades_georgio.ID_unidad = ser_prestamos.idunidad
+    LEFT JOIN adm_usuarios ON adm_usuarios.idusuario = ser_prestamos.idchofer
+  WHERE ser_prestamos.idunidad = $idunidad ORDER BY ser_prestamos.idprestamo DESC limit 1";
+
+$consulta = $this->db->prepare($query);
+$consulta->execute();
+while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
+  $this->modelo[] = $filas;
+}
+return $this->modelo;
+
+}
+
+
+
 
 
 
